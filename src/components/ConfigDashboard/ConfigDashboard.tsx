@@ -12,6 +12,8 @@ import connections from '../../data-sources/connections';
 import ConnectionsStore from '../../stores/ConnectionsStore';
 import ConnectionsActions from '../../actions/ConnectionsActions';
 
+import { ScorecardConfig } from '../generic/Scorecard';
+
 interface IConfigDashboardState {
   connections: IDictionary;
   error: string;
@@ -34,6 +36,7 @@ export default class ConfigDashboard extends React.Component<IConfigDashboardPro
 
     this.onSave = this.onSave.bind(this);
     this.onSaveGoToDashboard = this.onSaveGoToDashboard.bind(this);
+    this.updateElementConfig = this.updateElementConfig.bind(this);
 
     ConfigurationsActions.loadConfiguration();
   }
@@ -76,6 +79,21 @@ export default class ConfigDashboard extends React.Component<IConfigDashboardPro
 
   onCancel() {
     window.location.replace('/dashboard');    
+  }
+
+  updateElementConfig(id: string, newValue: any, oldValue: any, updatedConfig: any) {
+    if (id === 'id') {
+
+      // Update associated layout entries
+
+      let layouts = this.props.dashboard.config.layout && this.props.dashboard.config.layout.layouts;
+      if (layouts) {
+        _.keys(layouts).forEach((breakpoint, index) => {
+          var layoutEntry = _.find(layouts[breakpoint], { i: oldValue });
+          layoutEntry.i = newValue;
+        })
+      }
+    }
   }
 
   render() {
@@ -122,6 +140,8 @@ export default class ConfigDashboard extends React.Component<IConfigDashboardPro
           }
         })}
 
+        <br/>
+        <ScorecardConfig config={_.find(this.props.dashboard.elements, {id: 'scores'})} onChange={this.updateElementConfig} />
         <br/>
         <Button flat primary label="Save" onClick={this.onSave}>save</Button>
         <Button flat secondary label="Save and Go to Dashboard" onClick={this.onSaveGoToDashboard}>save</Button>

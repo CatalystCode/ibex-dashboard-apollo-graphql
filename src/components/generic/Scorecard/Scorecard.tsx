@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { GenericComponent, IGenericProps } from './GenericComponent';
+import { GenericComponent, IGenericProps } from '../GenericComponent';
 import { Media } from 'react-md/lib/Media';
 import { Card } from 'react-md/lib/Cards';
 import FontIcon from 'react-md/lib/FontIcons';
@@ -90,7 +90,7 @@ export default class Scorecard extends GenericComponent<IScorecardProps, any> {
 
     var cards = values.map((value, idx) => {
       let colorStyle = {};
-      let cardstyle = _.extend({}, style);
+      let cardStyle = _.extend({}, style);
       let color = value.color || '';
       let icon = value.icon;
       let iconStyle = icon && { color };
@@ -101,7 +101,7 @@ export default class Scorecard extends GenericComponent<IScorecardProps, any> {
 
       if (!icon || colorPosition) {
         if (!colorPosition || colorPosition === 'bottom') { colorStyle['borderColor'] = color; }
-        if (colorPosition === 'left') { cardstyle['borderColor'] = color; }
+        if (colorPosition === 'left') { cardStyle['borderColor'] = color; }
       }
 
       const drillDownLink = onClick ?
@@ -110,7 +110,7 @@ export default class Scorecard extends GenericComponent<IScorecardProps, any> {
 
       let cardClassName = 'scorecard ' + (onClick ? 'clickable-card ' : '') + (colorPosition ? 'color-' + colorPosition : '');
       return (
-        <div key={idx} className={cardClassName} style={cardstyle} onClick={this.handleClick.bind(this, value)}>
+        <div key={idx} className={cardClassName} style={cardStyle} onClick={this.handleClick.bind(this, value)}>
           {
             icon && <FontIcon className={className} style={iconStyle}>{icon}</FontIcon>
           }

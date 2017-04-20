@@ -15,7 +15,7 @@ This article explains how define a Scorecard display control.
 | `actions`| `object` || Defined actions for this element
 
 # Three States
-There are 3 configuraions for this element type
+There are 3 configurations for this element type
 
 ## Single value
 
@@ -93,7 +93,7 @@ All items in `values` should contains:
 ## Dynamic cards
 
 This configuration allows you to define multiple cards from multiple sources in a dynamic way.
-To do that, you need to deinfe each card in the format `card_<card name>_<property>`.
+To do that, you need to define each card in the format `card_<card name>_<property>`.
 
 The following example shows how to define two cards, `errors` and `users` where each defines its own properties:
 
@@ -132,7 +132,7 @@ A card value has the following properties:
 | `subheading`| Small heading under small value to display
 | `className`| Class name to add to value
 
-These are examples of openning a dialog when clicking on a card:
+These are examples of opening a dialog when clicking on a card:
 
 `One value card`:
 
@@ -167,7 +167,7 @@ These are examples of openning a dialog when clicking on a card:
 }
 ```
 
-`Dyanmic card click`: 
+`Dynamic card click`: 
 
 ```js
 {

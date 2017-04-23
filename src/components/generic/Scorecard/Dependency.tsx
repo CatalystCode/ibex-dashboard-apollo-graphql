@@ -11,12 +11,14 @@ interface IDependencyProps {
   id: string;
   label?: string;
   defaultValue?: string;
+  onChange?: (value: string) => void;
 }
 
 interface IDependencyState {
   dataSources: IDataSourceDictionary;
   searchTerm: string;
   dependencies: string[];
+  retries: number;
 }
 
 export default class Dependency extends React.Component<IDependencyProps, IDependencyState> {
@@ -24,27 +26,60 @@ export default class Dependency extends React.Component<IDependencyProps, IDepen
   state: IDependencyState = {
     dataSources: null,
     searchTerm: '',
-    dependencies: []
+    dependencies: [],
+    retries: 5
   }
 
   constructor (props: IDependencyProps) {
     super(props);
 
     this.searchForDependencies = this.searchForDependencies.bind(this);
+    this.onChange = this.onChange.bind(this);
 
     this.throttledSearch = throttle(this.searchForDependencies, 250);
   }
 
   componentWillMount() {
-    setInterval(() => {
+    let handler = setInterval(() => {
       let dataSources = DataSourceConnector.getDataSources();
-      this.setState({ dataSources });
-    }, 3000);
+      let dependencies = [ '::' ];
+      if (dataSources) {
+        _.keys(dataSources).forEach((dataSourceKey) => {
+          dependencies.push(dataSourceKey);
+
+          let dataSource = dataSources[dataSourceKey];
+          let state = dataSource.store.getState()
+          _.keys(state).forEach((stateKey) => {
+            dependencies.push(dataSourceKey + ':' + stateKey);
+          });
+        });
+      }
+
+      let { retries } = this.state;
+      if (dependencies.length === this.state.dependencies.length) {
+
+        if (--retries === 0) { clearInterval(handler); }
+        this.setState({ retries });
+
+        return;
+      }
+
+      this.setState({ dataSources, dependencies });
+    }, 1000);
   }
 
-  throttledSearch() { }
+  throttledSearch(searchTerm: string) { }
 
-  searchForDependencies(searchTerm) {
+  onChange(searchTerm) {
+
+    if (this.props.onChange) {
+      this.props.onChange(searchTerm);
+    }
+
+    return this.throttledSearch(searchTerm);
+  }
+
+  searchForDependencies(searchTerm: string) {
 
     if (!searchTerm || !this.state.dataSources) {
       searchTerm = '';

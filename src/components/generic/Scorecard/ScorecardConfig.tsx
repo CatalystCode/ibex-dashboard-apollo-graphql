@@ -150,14 +150,12 @@ export default class ScorecardConfig extends React.Component<IScorecardConfProps
             let fields = _.keys(cards[cardName]).map(
               (key, index) => {
                  return (
-                  <TextField
+                  <Dependency
                     key={cardIndex * 100 + index}
                     id={cardName + '_' + key}
                     label={key}
                     defaultValue={cards[cardName][key]}
-                    lineDirection="center"
                     onChange={this.onChange.bind(this, 'dependencies.card_' + cardName + '_' + key)}
-                    className="md-cell"
                   />
                 );
               }

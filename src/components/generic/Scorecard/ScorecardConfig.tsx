@@ -5,6 +5,8 @@ import SelectField from 'react-md/lib/SelectFields';
 import Button from 'react-md/lib/Buttons/Button';
 import { TabsContainer, Tab, Tabs } from 'react-md/lib/Tabs';
 
+import Dependency from './Dependency';
+
 interface IScorecardConfProps {
   config: any;
   onChange: (id: string, newValue: any, oldValue: any, config: any) => void;
@@ -217,14 +219,11 @@ export default class ScorecardConfig extends React.Component<IScorecardConfProps
         [ 'value', 'color', 'icon', 'subvalue', 'className' ].map(
           (value, index) => {
             return (
-              <TextField
+              <Dependency
                 key={index}
                 id={value}
                 label={value}
                 defaultValue={this.getProperty('dependencies.' + value, '')}
-                lineDirection="center"
-                onChange={this.onChange.bind(this, 'dependencies.' + value)}
-                className="md-cell"
               />
             );
           }

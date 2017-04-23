@@ -3,30 +3,42 @@ import * as request from 'xhr-request';
 
 interface IConfigurationsActions {
   loadConfiguration(): any;
+  loadConfigurationSuccessful(dashboard: IDashboardConfig): { dashboard: IDashboardConfig };
   saveConfiguration(dashboard: IDashboardConfig): any;
   failure(error: any): void;
 }
 
 class ConfigurationsActions extends AbstractActions implements IConfigurationsActions {
+
+  fetching = false;
+
   constructor(alt: AltJS.Alt) {
     super(alt);
   }
 
+  loadConfigurationSuccessful(dashboard: IDashboardConfig): { dashboard: IDashboardConfig } {
+    return { dashboard };
+  }
+
   loadConfiguration() {
-    
-    return (dispatcher: (dashboard: IDashboardConfig) => void) => {
-      
-      this.getScript('/api/dashboard.js', () => {
-        let dashboards: IDashboardConfig[] = (window as any)['dashboards'];
 
-        if (!dashboards || !dashboards.length) {
-          return this.failure(new Error('Could not load configuration'));
-        }
+    if (this.fetching) { return; }
 
-        let dashboard = dashboards[0];
-        return dispatcher(dashboard);
-      });
-    };
+    this.fetching = true;
+  
+    this.getScript('/api/dashboard.js', () => {
+
+      this.fetching = false;
+
+      let dashboards: IDashboardConfig[] = (window as any)['dashboards'];
+
+      if (!dashboards || !dashboards.length) {
+        return this.failure(new Error('Could not load configuration'));
+      }
+
+      let dashboard = dashboards[0];
+      return this.loadConfigurationSuccessful(dashboard);
+    });
   }
 
   saveConfiguration(dashboard: IDashboardConfig) {

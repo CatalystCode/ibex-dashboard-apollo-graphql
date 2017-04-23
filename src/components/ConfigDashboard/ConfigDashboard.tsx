@@ -6,7 +6,6 @@ import Button from 'react-md/lib/Buttons/Button';
 import ConfigurationsActions from '../../actions/ConfigurationsActions';
 import ConfigurationsStore from '../../stores/ConfigurationsStore';
 
-import { DataSourceConnector, IDataSourceDictionary } from '../../data-sources';
 import connections from '../../data-sources/connections';
 
 import ConnectionsStore from '../../stores/ConnectionsStore';

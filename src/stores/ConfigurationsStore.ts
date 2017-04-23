@@ -28,11 +28,15 @@ class ConfigurationsStore extends AbstractStoreModel<IConfigurationsStoreState> 
     this.loaded = false;
 
     this.bindListeners({
-      loadConfiguration: configurationActions.loadConfiguration
+      loadConfiguration: configurationActions.loadConfigurationSuccessful
     });
   }
   
-  loadConfiguration(dashboard: IDashboardConfig) {
+  loadConfiguration(result: { dashboard: IDashboardConfig }): void {
+
+    if (!_.has(result, 'dashboard')) { return; }
+
+    let { dashboard } = result;
     this.dashboard = dashboard;
 
     if (this.dashboard && !this.loaded) {

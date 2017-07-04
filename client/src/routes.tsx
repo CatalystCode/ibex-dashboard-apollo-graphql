@@ -6,6 +6,7 @@ import NotFound from './pages/NotFound';
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
 import Setup from './pages/Setup';
+import ApolloDashboard from './apollo/pages/Dashboard';
 
 export default (
   <Route component={App}>
@@ -14,6 +15,7 @@ export default (
     <Route path="/dashboard" component={Dashboard} />
     <Route path="/dashboard/:id" component={Dashboard}/>
     <Route path="/setup" component={Setup} />
+    <Route path="/apollo" component={ApolloDashboard} />
     <Route path="*" component={NotFound} />
   </Route>
 );

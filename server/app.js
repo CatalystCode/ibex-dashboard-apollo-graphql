@@ -6,11 +6,15 @@ const morgan = require('morgan');
 const path = require('path');
 const fs = require('fs');
 const bodyParser = require('body-parser');
+const cors = require('cors');
+const { graphqlExpress, graphiqlExpress } = require('graphql-server-express');
+const { schema } = require('./apollo/schema');
 const authRouter = require('./routes/auth');
 const apiRouter = require('./routes/api');
 const graphQLRouter = require('./routes/graphql');
 const cosmosDBRouter = require('./routes/cosmos-db');
 const azureRouter = require('./routes/azure');
+const appInsightsRouter = require('./routes/application-insights');
 
 const app = express();
 
@@ -25,6 +29,11 @@ app.use(expressSession({ secret: 'keyboard cat', resave: true, saveUninitialized
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true })); 
 
+// Setup apollo
+app.use('*', cors({ origin: '*' }));
+app.use('/apollo', bodyParser.json(), graphqlExpress({ schema }));
+app.use('/apollo-explorer', graphiqlExpress({ endpointURL: '/apollo' }));
+
 // Setup logger
 app.use(morgan(':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] :response-time ms'));
 
@@ -33,7 +42,8 @@ app.use('/auth', authRouter.router);
 app.use('/api', apiRouter.router);
 app.use('/cosmosdb', cosmosDBRouter.router);
 app.use('/azure', azureRouter.router);
-app.use('/graphql', graphQLRouter.router);
+app.use('/graphql', graphQLRouter.router)
+app.use('/applicationinsights', appInsightsRouter.router)
 
 app.use(express.static(path.resolve(__dirname, '..', 'build')));
 

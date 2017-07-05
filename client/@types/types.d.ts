@@ -81,6 +81,8 @@ interface IDashboardConfig extends IDataSourceContainer, IElementsContainer {
   },
   filters: IFilter[]
   dialogs: IDialog[]
+  visual: VisualElement[]
+  visualFilters: VisualElement[]
 }
 
 interface Sizes<T> {
@@ -89,6 +91,13 @@ interface Sizes<T> {
   sm?: T,
   xs?: T,
   xxs?: T
+}
+
+interface VisualElement {
+  Type: string,
+  query:string,
+  title: string,
+  id: string,
 }
 
 interface ILayout { 

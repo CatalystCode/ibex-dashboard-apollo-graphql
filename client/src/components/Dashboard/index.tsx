@@ -13,6 +13,8 @@ var WidthProvider = ReactGridLayout.WidthProvider;
 ResponsiveReactGridLayout = WidthProvider(ResponsiveReactGridLayout);
 
 import ElementConnector from '../ElementConnector';
+import ElementConnectorGQL from '../ElementConnectorForGQL';
+
 import { loadDialogsFromDashboard } from '../generic/Dialogs';
 import IDownloadFile, { exportDataSources, createDownloadFiles, downloadBlob } from './DownloadFile';
 
@@ -265,7 +267,8 @@ export default class Dashboard extends React.Component<IDashboardProps, IDashboa
     var elements = ElementConnector.loadElementsFromDashboard(dashboard, layout);
 
     // Creating filter elements
-    var { filters, /*additionalFilters*/ } = ElementConnector.loadFiltersFromDashboard(dashboard);
+    var filters = ElementConnectorGQL.loadGraphqlElementsFromDashboard(dashboard.visualFilters);
+    var elementsgql = ElementConnectorGQL.loadGraphqlElementsFromDashboard(dashboard.visual);
 
     // Loading dialogs
     var dialogs = loadDialogsFromDashboard(dashboard);
@@ -385,6 +388,7 @@ export default class Dashboard extends React.Component<IDashboardProps, IDashboa
           useCSSTransforms={this.state.mounted}
         >
           {elements}
+          {elementsgql}  
         </ResponsiveReactGridLayout>
 
         {dialogs}

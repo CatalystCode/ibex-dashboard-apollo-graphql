@@ -13,7 +13,6 @@ router.post('/query', (req, res) => {
 
   let url = `https://${host}/beta/apps/${appId}/query`;
   if (queryTimespan) url += `?timespan=${queryTimespan}`;
-
   request(url, {
     method: 'POST',
     headers: {

@@ -1,3 +1,5 @@
+// This is a temp file and should be deleted
+
 import * as React from 'react';
 import { gql, graphql } from 'react-apollo';
 import { appId, apiKey } from '../../data-sources/plugins/ApplicationInsights/common';

@@ -8,7 +8,7 @@ import VisibilityStore from '../stores/VisibilityStore';
 
 export default class ElementConnector {
   static loadLayoutFromDashboard(elementsContainer: IElementsContainer, dashboard: IDashboardConfig): ILayouts {
-    
+
     var layouts = {};
     _.each(dashboard.config.layout.cols, (totalColumns, key) => {
 
@@ -61,7 +61,7 @@ export default class ElementConnector {
       var { id, dependencies, actions, props, title, subtitle, size, theme, location } = element;
       var layoutProps = _.find(layout, { 'i': id });
 
-      if (dependencies && dependencies.visible && !visibilityFlags[dependencies.visible]) { 
+      if (dependencies && dependencies.visible && !visibilityFlags[dependencies.visible]) {
         if (typeof visibilityFlags[dependencies.visible] === 'undefined') {
           let flagDependencies = DataSourceConnector.extrapolateDependencies({ value: dependencies.visible });
           let flag = {};
@@ -69,7 +69,7 @@ export default class ElementConnector {
 
           (VisibilityActions.setFlags as any).defer(flag);
         } else {
-          return; 
+          return;
         }
       }
 
@@ -78,7 +78,7 @@ export default class ElementConnector {
       elementId[id] = true;
       elements.push(
         <div key={id}>
-          <ReactElement 
+          <ReactElement
             id={id + idx}
             dependencies={dependencies}
             actions={actions || {}}
@@ -104,13 +104,13 @@ export default class ElementConnector {
     dashboard.filters.forEach((element, idx) => {
       var ReactElement = plugins[element.type];
       (element.first ? filters : additionalFilters).push(
-        <ReactElement 
-              key={idx} 
-              dependencies={element.dependencies}
-              actions={element.actions}
-              title={element.title}
-              subtitle={element.subtitle}
-              icon={element.icon}
+        <ReactElement
+          key={idx}
+          dependencies={element.dependencies}
+          actions={element.actions}
+          title={element.title}
+          subtitle={element.subtitle}
+          icon={element.icon}
         />
       );
     });

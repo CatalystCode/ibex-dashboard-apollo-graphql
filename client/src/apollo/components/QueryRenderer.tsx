@@ -1,3 +1,4 @@
+// This is a temp file that should be deleted
 import * as React from 'react';
 
 export interface IQueryRendererProps {

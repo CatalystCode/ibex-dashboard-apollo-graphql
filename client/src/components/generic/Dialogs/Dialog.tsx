@@ -126,7 +126,7 @@ export default class Dialog extends React.PureComponent<IDialogProps, IDialogSta
 
     let grid = {
       className: 'layout',
-     // rowHeight: '100%',//dashboard.config.layout.rowHeight || 30,
+      rowHeight: 300, // dashboard.config.layout.rowHeight || 300,
       cols: dashboard.config.layout.cols,
       breakpoints: dashboard.config.layout.breakpoints
     };

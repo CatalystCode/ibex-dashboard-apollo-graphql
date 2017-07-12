@@ -2,26 +2,31 @@ import alt, { AbstractStoreModel } from '../alt';
 
 import filterActions from '../actions/FilterActions';
 
+interface IFilterState {
+  filterId: string,
+  values: string[]
+}
+
 interface IFilterStoreState {
-  showLine: boolean;
+  filterState: IFilterState[]
 }
 
 class FilterStore extends AbstractStoreModel<IFilterStoreState> implements IFilterStoreState {
 
-  showLine: boolean;
+  filterState: IFilterState[];
 
   constructor() {
     super();
 
-    this.showLine = null;
+    this.filterState = [];
 
     this.bindListeners({
       updateItems: filterActions.filterChanged
     });
   }
   
-  updateItems(showline: boolean) {
-    this.showLine = showline;
+  updateItems(filter:any) {
+    this.filterState[filter.filterId] = filter.selectedValues;
   }
 }
 

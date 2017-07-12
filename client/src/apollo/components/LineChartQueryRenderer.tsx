@@ -15,6 +15,7 @@ export interface ILineChartQueryRendererProps {
   dialog: string;
   title: string;
   subtitle: string;
+  id: string;
 }
 
 export default class LineChartQueryRenderer extends React.PureComponent<ILineChartQueryRendererProps, any> {
@@ -22,11 +23,15 @@ export default class LineChartQueryRenderer extends React.PureComponent<ILineCha
   constructor(props: any) {
     super(props);
 
+    this.state = {channels: []}
     filterStore.listen((state) => {
-      alert(state.showLine);
-      this.setState(state);
+      var channelsArray = state.filterState['channelsFilter1'];
+      if (channelsArray) {
+        this.setState({channels: channelsArray});
+      }
     });
 
+    this.onChannelsFilterChange = this.onChannelsFilterChange.bind(this);
     this.onDialogOpen = this.onDialogOpen.bind(this);
   }
 
@@ -37,6 +42,14 @@ export default class LineChartQueryRenderer extends React.PureComponent<ILineCha
   hourFormat(time: string) {
     return moment(time).format('HH:mm');
   }
+
+
+  onChannelsFilterChange() {
+    const { channels } = this.state;
+
+    alert('ok changing filters to' + channels)
+  }
+
 
   onDialogOpen() {
     var dialogId = this.props.dialog;
@@ -53,14 +66,14 @@ export default class LineChartQueryRenderer extends React.PureComponent<ILineCha
 
   // This method extracts from the data all the unique series names. not efficient at the moment
   // and should be updated
-  naiveGetAllDifferentLines(data: any) {
+  naiveGetAllDifferentLines(data: any, channels: any[]) {
     var lines = [];
     var saw = [];
     var ind = 0;
     for (var i = 0; i < data.length; i++) {
       for (var key in data[i]) {
         if (data[i].hasOwnProperty(key)) {
-          if (!saw[key] && key !== 'name') {
+          if (!saw[key] && key !== 'name' && channels.find((x)=> {return x===key})) {
             saw[key] = {};
 
             lines.push(
@@ -82,14 +95,16 @@ export default class LineChartQueryRenderer extends React.PureComponent<ILineCha
   }
 
   render() {
+    
+    const { channels } = this.state;
     var format = this.dateFormat;
-    var lines = this.naiveGetAllDifferentLines(this.props.results);
+    var lines = this.naiveGetAllDifferentLines(this.props.results, channels);
 
     return (
       <div className="LineChartQueryRenderer">
-        <Card title={this.props.title} subtitle={this.props.subtitle} >
+        <Card title={this.props.title} subtitle={this.props.subtitle}>
           <ResponsiveContainer minHeight={300}>
-            <LineChart width={600} height={300} data={this.props.results} onClick={this.onDialogOpen}
+            <LineChart id={this.props.id} width={600} height={300} data={this.props.results} onClick={this.onDialogOpen}
               margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
               <XAxis dataKey="name" tickFormatter={format} minTickGap={20} />
               <YAxis type="number" domain={['dataMin', 'dataMax']} />

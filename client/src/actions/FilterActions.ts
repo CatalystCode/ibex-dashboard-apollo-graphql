@@ -2,7 +2,7 @@ import alt, { AbstractActions } from '../alt';
 import * as request from 'xhr-request';
 
 interface IFilterActions {
-  filterChanged(showLine: boolean): boolean;
+  filterChanged(filterId: string, selectedValues: string[]): any;
 }
 
 class FilterActions extends AbstractActions implements IFilterActions {
@@ -10,8 +10,8 @@ class FilterActions extends AbstractActions implements IFilterActions {
     super(alt);
   }
 
-  filterChanged(showLine: boolean): boolean {
-    return showLine;
+  filterChanged(filterId: string, selectedValues: string[]): any {
+    return {filterId , selectedValues};
   }
 }
 

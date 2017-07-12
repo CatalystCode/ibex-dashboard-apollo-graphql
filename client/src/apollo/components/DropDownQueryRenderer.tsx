@@ -13,6 +13,7 @@ var { ThemeColors } = colors;
 
 export interface IDropDownQueryRendererProps {
   results: any;
+  id: string;
 }
 
 const styles = {
@@ -48,7 +49,90 @@ const classNames = {
 };
 
 export default class DropDownQueryRenderer extends React.PureComponent<IDropDownQueryRendererProps, any> {
+static defaultProps = {
+    title: '',
+    subtitle: 'Select filter',
+    icon: 'more_vert',
+    selectAll: 'Enable filters',
+    selectNone: 'Clear filters'
+  };
 
+  state = {
+    overlay: false,
+    values: [],
+    selectedValues: [],
+    originalSelectedValues: []
+  };
+
+  constructor(props: any) {
+    super(props);
+
+    this.onChange = this.onChange.bind(this);
+    this.toggleOverlay = this.toggleOverlay.bind(this);
+    this.hideOverlay = this.hideOverlay.bind(this);
+    this.selectAll = this.selectAll.bind(this);
+    this.selectNone = this.selectNone.bind(this);
+  }
+
+  toggleOverlay() {
+    const { overlay, selectedValues } = this.state;
+    this.setState({ overlay: !overlay, originalSelectedValues: selectedValues });
+    if (overlay) {
+      this.triggerChanges();
+    }
+  }
+
+  hideOverlay() {
+    this.setState({ overlay: false });
+    this.triggerChanges();
+  }
+
+  triggerChanges() {
+    const { selectedValues } = this.state;
+    if (!this.didSelectionChange()) {
+      return;
+    }
+    //this.trigger('onChange', selectedValues);
+  }
+
+  didSelectionChange(): boolean {
+    const { selectedValues, originalSelectedValues } = this.state;
+    if (!selectedValues || !originalSelectedValues) {
+      return false;
+    }
+    if (selectedValues.length !== originalSelectedValues.length
+      || selectedValues.slice(0).sort().join() !== originalSelectedValues.slice(0).sort().join()) {
+      return true;
+    }
+    return false;
+  }
+
+  onChange(newValue: any, checked: boolean, event: any) {
+    var { selectedValues } = this.state;
+    let newSelectedValues = selectedValues.slice(0);
+    const idx = selectedValues.findIndex((x) => x === newValue);
+    if (idx === -1 && checked) {
+      newSelectedValues.push(newValue);
+    } else if (idx > -1 && !checked) {
+      newSelectedValues.splice(idx, 1);
+    } else {
+      console.warn('Unexpected checked filter state:', newValue, checked);
+    }
+
+    FilterActions.filterChanged(this.props.id, newSelectedValues);
+
+    this.setState({ selectedValues: newSelectedValues });
+  }
+
+  selectAll() {
+    this.setState({ selectedValues: this.state.values });
+  }
+
+  selectNone() {
+    this.setState({ selectedValues: [] });
+  }
+
+/*
   static defaultProps = {
     title: '',
     subtitle: 'Select filter',
@@ -73,12 +157,13 @@ export default class DropDownQueryRenderer extends React.PureComponent<IDropDown
   onChange(newValue: any, checked: boolean, event: any) {
     // alert(this.props.id);
     // alert(newValue);
-
+    var { selectedValues } = this.state;
+    var newSelectedValues = selectedValues;
     FilterActions.filterChanged(this.state.overlay);
     // call react action -  state changed
 
-    this.setState({/* selectedValues: newSelectedValues,*/ overlay: !this.state.overlay });
-  }
+    this.setState({ selectedValues: newSelectedValues, overlay: !this.state.overlay });
+  }*/
 
   render() {
     let { selectedValues, overlay } = this.state;
@@ -102,7 +187,8 @@ export default class DropDownQueryRenderer extends React.PureComponent<IDropDown
                 name="lineItems"
                 label={item.name}
                 defaultChecked
-                onChange={this.onChange}
+                onChange={this.onChange.bind(null, item.name)}
+              checked={selectedValues.find((x) => x === item.name) !== undefined}
               />
             )
           }

@@ -9,6 +9,8 @@ import VisibilityStore from '../stores/VisibilityStore';
 import ListItemControl from 'react-md/lib/Lists/ListItemControl';
 import Checkbox from 'react-md/lib/SelectionControls/Checkbox';
 
+import Button from 'react-md/lib/Buttons/Button';
+
 import { ApolloClient, ApolloProvider, createNetworkInterface } from 'react-apollo';
 import { makeExecutableSchema } from 'graphql-tools';
 import { typeDefs } from '../apollo/typeDefs';
@@ -57,6 +59,7 @@ interface IQueryRendererWithDataProps {
   id: string;
   title: string;
   subtitle: string;
+  dialog: string;
 }
 
 const LineChartRendererGQL =
@@ -71,6 +74,7 @@ const LineChartRendererGQL =
         results: graphqlResultsTransformUtils.lineChartsDataTransform(data.lineCharts),
         title: ownProps.title,
         subtitle: ownProps.subtitle,
+        dialog: ownProps.dialog,
       } as ILineChartQueryRendererProps;
     },
   })(LineChartQueryRenderer);
@@ -107,7 +111,8 @@ const DropDownRendererGQL =
   })(DropDownQueryRenderer);
 
 export default class ElementConnectorForGQL {
-  static loadGraphqlElementsFromDashboard(visual: VisualElement[]): React.Component<any, any>[] {
+
+  static loadGraphqlElementsFromDashboard(visual: IVisualElement[], layout: ILayout[]): React.Component<any, any>[] {
     var types = {
       'LineChart': LineChartRendererGQL,
       'PieData': StraightAnglePieChartRendererGQL,
@@ -128,7 +133,8 @@ export default class ElementConnectorForGQL {
             query={visual[i].query}
             id={visual[i].id}
             title={visual[i].title}
-            subtitle={visual[i].subtitle} />
+            subtitle={visual[i].subtitle}
+            dialog={visual[i].dialog} />
         </div>
       );
     }

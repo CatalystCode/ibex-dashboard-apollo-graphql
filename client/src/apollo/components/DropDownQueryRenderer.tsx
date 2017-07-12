@@ -93,7 +93,8 @@ export default class DropDownQueryRenderer extends React.PureComponent<IDropDown
     for (var i = 0; i < this.props.results.length; i++) {
       var item = this.props.results[i];
       items.push(
-        <ListItemControl
+        <ListItemControl 
+          key={'drp' + i + item.id}
           primaryAction={
             (
               <Checkbox
@@ -112,7 +113,7 @@ export default class DropDownQueryRenderer extends React.PureComponent<IDropDown
       <div className="DropDownQueryRenderer">
         <Card title={'This should be a dropbox (someday)'} subtitle={'Yep'}>
           <div style={containerStyle} >
-            <List visible={overlay}>
+            <List>
               {items}
             </List>
           </div>

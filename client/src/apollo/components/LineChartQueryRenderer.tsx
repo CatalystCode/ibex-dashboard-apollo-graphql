@@ -3,6 +3,7 @@ import Card from '../../components/Card';
 import * as moment from 'moment';
 
 import filterStore from '../../stores/FilterStore';
+import dialogActions from '../../components/generic/Dialogs/DialogsActions';
 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
@@ -11,6 +12,7 @@ var { ThemeColors } = colors;
 
 export interface ILineChartQueryRendererProps {
   results: any;
+  dialog: string;
   title: string;
   subtitle: string;
 }
@@ -24,6 +26,8 @@ export default class LineChartQueryRenderer extends React.PureComponent<ILineCha
       alert(state.showLine);
       this.setState(state);
     });
+
+    this.onDialogOpen = this.onDialogOpen.bind(this);
   }
 
   dateFormat(time: string) {
@@ -32,6 +36,19 @@ export default class LineChartQueryRenderer extends React.PureComponent<ILineCha
 
   hourFormat(time: string) {
     return moment(time).format('HH:mm');
+  }
+
+  onDialogOpen() {
+    var dialogId = this.props.dialog;
+    if (!dialogId) {
+      return;
+    }
+
+    dialogActions.openDialog(dialogId, {});
+
+    // this.setState({ dialogId });
+
+    //alert('here will open up: ' + dialogId);
   }
 
   // This method extracts from the data all the unique series names. not efficient at the moment
@@ -47,7 +64,9 @@ export default class LineChartQueryRenderer extends React.PureComponent<ILineCha
             saw[key] = {};
 
             lines.push(
-              <Line type="monotone" dataKey={key}
+              <Line type="monotone" 
+                dataKey={key}
+                key={'line' + i + key}
                 stroke={ThemeColors[ind % ThemeColors.length]}
                 dot={false}
                 ticksCount={5}
@@ -68,9 +87,9 @@ export default class LineChartQueryRenderer extends React.PureComponent<ILineCha
 
     return (
       <div className="LineChartQueryRenderer">
-        <Card title={this.props.title} subtitle={this.props.subtitle}>
+        <Card title={this.props.title} subtitle={this.props.subtitle} >
           <ResponsiveContainer minHeight={300}>
-            <LineChart width={600} height={300} data={this.props.results}
+            <LineChart width={600} height={300} data={this.props.results} onClick={this.onDialogOpen}
               margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
               <XAxis dataKey="name" tickFormatter={format} minTickGap={20} />
               <YAxis type="number" domain={['dataMin', 'dataMax']} />

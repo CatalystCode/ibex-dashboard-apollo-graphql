@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { DataSourceConnector, IDataSourceDictionary } from '../../../data-sources';
 import ElementConnector from  '../../ElementConnector';
+import ElementConnectorGQL from  '../../ElementConnectorForGQL';
 
 import DialogsActions from './DialogsActions';
 import DialogsStore from './DialogsStore';
@@ -17,7 +18,7 @@ var WidthProvider = ReactGridLayout.WidthProvider;
 ResponsiveReactGridLayout = WidthProvider(ResponsiveReactGridLayout);
 
 interface IDialogProps {
-  dialogData: IDialog;
+  dialogData: IVisualDialog; // IDialog;
   dashboard: IDashboardConfig;
 }
 
@@ -35,6 +36,7 @@ export default class Dialog extends React.PureComponent<IDialogProps, IDialogSta
 
   constructor(props: IDialogProps) {
     super(props);
+    
 
     this.state = DialogsStore.getState();
     this.onChange = this.onChange.bind(this);
@@ -47,12 +49,14 @@ export default class Dialog extends React.PureComponent<IDialogProps, IDialogSta
         selectedValue: null
       }
     };
-    DataSourceConnector.createDataSources({ dataSources: [ dialogDS ] }, this.props.dashboard.config.connections);
+    
+    //DataSourceConnector.createDataSources({ dataSources: [ dialogDS ] }, this.props.dashboard.config.connections);
 
     // Adding other data sources
-    DataSourceConnector.createDataSources(this.props.dialogData, this.props.dashboard.config.connections);
+    //DataSourceConnector.createDataSources(this.props.dialogData, this.props.dashboard.config.connections);
 
-    var layouts = ElementConnector.loadLayoutFromDashboard(this.props.dialogData, this.props.dashboard);
+    var layouts = ElementConnector.loadLayoutFromDashboard(this.props.dashboard, this.props.dashboard);
+    //var layouts = ElementConnectorGQL.loadLayoutFromDashboard(this.props.dialogData, this.props.dashboard);
     
     this.layouts = layouts;
     (this.state as any).layouts = {  };
@@ -116,11 +120,13 @@ export default class Dialog extends React.PureComponent<IDialogProps, IDialogSta
     }
 
     // Creating visual elements
-    var elements = ElementConnector.loadElementsFromDashboard(dialogData, layout);
+    //var elements = ElementConnector.loadElementsFromDashboard(dialogData, layout);
+    // remove the hard coded 0
+    var elements = ElementConnectorGQL.loadGraphqlElementsFromDashboard(dialogData.visual, layout);
 
     let grid = {
       className: 'layout',
-      rowHeight: dashboard.config.layout.rowHeight || 30,
+     // rowHeight: '100%',//dashboard.config.layout.rowHeight || 30,
       cols: dashboard.config.layout.cols,
       breakpoints: dashboard.config.layout.breakpoints
     };
@@ -132,7 +138,7 @@ export default class Dialog extends React.PureComponent<IDialogProps, IDialogSta
         title={title}
         focusOnMount={false}
         onHide={this.closeDialog}
-        dialogStyle={{ width: dialogData.width || '80%', overflow: 'auto' }}
+       // dialogStyle={{ width: /*dialogData.width ||*/ '80%', overflow: 'auto' }}
         contentStyle={{ padding: '0' }}
       >
         <ResponsiveReactGridLayout

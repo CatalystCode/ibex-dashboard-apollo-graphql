@@ -6,11 +6,11 @@ import DialogsStore from './DialogsStore';
 
 function loadDialogsFromDashboard(dashboard: IDashboardConfig): JSX.Element[] {
 
-  if (!dashboard.dialogs) {
+  if (!dashboard.visualDialog) {
     return null;
   }
 
-  var dialogs = dashboard.dialogs.map((dialog, idx) => 
+  var dialogs = dashboard.visualDialog.map((dialog, idx) => 
     <Dialog key={idx} dialogData={dialog} dashboard={dashboard} />
   );
 

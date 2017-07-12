@@ -97,6 +97,7 @@ interface VisualElement {
   Type: string,
   query:string,
   title: string,
+  subtitle: string,
   id: string,
 }
 

@@ -61,7 +61,9 @@ export default {
       }
     }
 
-    return formatted;
+    return formatted.sort(function (a: any, b: any) {
+      return Date.parse(a.name) - Date.parse(b.name);
+    });
   },
 
   pieChartsDataTransform: () => {

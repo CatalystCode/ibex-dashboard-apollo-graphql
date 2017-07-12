@@ -12,6 +12,7 @@ var { ThemeColors } = colors;
 export interface ILineChartQueryRendererProps {
   results: any;
   title: string;
+  subtitle: string;
 }
 
 export default class LineChartQueryRenderer extends React.PureComponent<ILineChartQueryRendererProps, any> {
@@ -67,7 +68,7 @@ export default class LineChartQueryRenderer extends React.PureComponent<ILineCha
 
     return (
       <div className="LineChartQueryRenderer">
-        <Card title={this.props.title} subtitle="some subtitle">
+        <Card title={this.props.title} subtitle={this.props.subtitle}>
           <ResponsiveContainer minHeight={300}>
             <LineChart width={600} height={300} data={this.props.results}
               margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>

@@ -4,8 +4,8 @@
 // finishes refactoring the server setup/configuration
 const appInsightsUri = 'http://localhost:3000/applicationinsights';
 
-const appId = process.env.REACT_APP_APP_INSIGHTS_APPID;
-const apiKey = process.env.REACT_APP_APP_INSIGHTS_APIKEY;
+const appId = '4d567b3c-e52c-4139-8e56-8e573e55a06c'; // process.env.REACT_APP_APP_INSIGHTS_APPID;
+const apiKey = 'o27hgbeqnkodr7ttcqs061z4bfxuyak4t0mvp8h1'; // process.env.REACT_APP_APP_INSIGHTS_APIKEY;
 
 export {
   appInsightsUri,

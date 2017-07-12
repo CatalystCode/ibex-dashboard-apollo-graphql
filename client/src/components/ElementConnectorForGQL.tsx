@@ -55,6 +55,8 @@ interface IChannelsQueryResults {
 interface IQueryRendererWithDataProps {
   query: string;
   id: string;
+  title: string;
+  subtitle: string;
 }
 
 const LineChartRendererGQL =
@@ -67,7 +69,8 @@ const LineChartRendererGQL =
         query: ownProps.query,
         id: ownProps.id,
         results: graphqlResultsTransformUtils.lineChartsDataTransform(data.lineCharts),
-        title: '33'
+        title: ownProps.title,
+        subtitle: ownProps.subtitle,
       } as ILineChartQueryRendererProps;
     },
   })(LineChartQueryRenderer);
@@ -81,6 +84,8 @@ const StraightAnglePieChartRendererGQL =
         error: data.error && data.error.message,
         query: ownProps.query,
         results: graphqlResultsTransformUtils.pieChartsDataTransform(),
+        title: ownProps.title,
+        subtitle: ownProps.subtitle,
       } as IStraightAnglePieChartQueryRendererProps;
     },
   })(StraightAnglePieChartQueryRenderer);
@@ -94,8 +99,9 @@ const DropDownRendererGQL =
         error: data.error && data.error.message,
         query: ownProps.query,
         results: graphqlResultsTransformUtils.DropDownComponentDataTransform(data.channels),
-        id: '1',
-        title: '22',
+        id: ownProps.id,
+        title: ownProps.title,
+        subtitle: ownProps.subtitle,
       } as IDropDownQueryRendererProps;
     },
   })(DropDownQueryRenderer);
@@ -118,7 +124,11 @@ export default class ElementConnectorForGQL {
       var key = '' + i + visual[i].Type;
       elementsgql.push(
         <div key={key}>
-          <ReactElement query={visual[i].query} title={visual[i].title} id={visual[i].id} />
+          <ReactElement
+            query={visual[i].query}
+            id={visual[i].id}
+            title={visual[i].title}
+            subtitle={visual[i].subtitle} />
         </div>
       );
     }

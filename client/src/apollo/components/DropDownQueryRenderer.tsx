@@ -13,8 +13,6 @@ var { ThemeColors } = colors;
 
 export interface IDropDownQueryRendererProps {
   results: any;
-  title: string;
-  id: string;
 }
 
 const styles = {

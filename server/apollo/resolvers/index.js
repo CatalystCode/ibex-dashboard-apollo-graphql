@@ -1,4 +1,4 @@
-const { channelsQuery, pieChartQuery, sentimentChartQuery, intentsQuery, lineChartQuery } = require('./queries/ai');
+const { channelsQuery, pieChartQuery, sentimentChartQuery, intentsQuery, lineChartQuery, barChartQuery } = require('./queries/ai');
 
 const resolvers = {
   Query: {
@@ -7,6 +7,7 @@ const resolvers = {
     channels: channelsQuery,
     intents: intentsQuery,
     sentiments: sentimentChartQuery,
+    barCharts: barChartQuery,
   },
 };
 

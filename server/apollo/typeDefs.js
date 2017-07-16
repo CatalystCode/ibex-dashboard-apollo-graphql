@@ -8,6 +8,7 @@ type Query {
   lineCharts(query:String!,  appId:String!, apiKey:String!): [LineChart]
   sentiments(query:String!, source:String!, appId:String!, apiKey:String!): [Sentiment]
   pieCharts(query:String!, source:String!, appId:String!, apiKey:String!): [PieChart]
+  barCharts(query:String!, source:String!, appId:String!, apiKey:String!): [BarChart]
 }
 
 type Channel {
@@ -29,6 +30,11 @@ type PieChart {
   id: String
   labels: [String]
   values: [Int]
+}
+
+type BarChart {
+  id: String
+  seriesData : [Series]
 }
 
 type Series {

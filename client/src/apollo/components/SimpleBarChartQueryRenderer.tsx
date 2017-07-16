@@ -1,26 +1,25 @@
 import * as React from 'react';
 import Card from '../../components/Card';
-import * as moment from 'moment';
+import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from
+  'recharts';
 
 import filterStore from '../../stores/FilterStore';
 import dialogActions from '../../components/generic/Dialogs/DialogsActions';
 
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-
 import colors from '../../components/colors';
 var { ThemeColors } = colors;
 
-export interface ILineChartQueryRendererProps {
+export interface ISimpleBarChartQueryRendererProps {
   results: any;
   dialog: string;
   title: string;
   subtitle: string;
-  id: string;
 }
 
-export default class LineChartQueryRenderer extends React.PureComponent<ILineChartQueryRendererProps, any> {
+export default class SimpleBarChartQueryRenderer extends
+  React.PureComponent<ISimpleBarChartQueryRendererProps, any> {
 
-  constructor(props: any) {
+    constructor(props: any) {
     super(props);
 
     this.state = {channels: []}
@@ -34,16 +33,8 @@ export default class LineChartQueryRenderer extends React.PureComponent<ILineCha
     this.onChannelsFilterChange = this.onChannelsFilterChange.bind(this);
     this.onDialogOpen = this.onDialogOpen.bind(this);
   }
-
-  dateFormat(time: string) {
-    return moment(time).format('MMM-DD');
-  }
-
-  hourFormat(time: string) {
-    return moment(time).format('HH:mm');
-  }
-
-  onChannelsFilterChange() {
+ 
+   onChannelsFilterChange() {
     const { channels } = this.state;
 
     alert('ok changing filters to' + channels)
@@ -62,8 +53,8 @@ export default class LineChartQueryRenderer extends React.PureComponent<ILineCha
 
   // This method extracts from the data all the unique series names. not efficient at the moment
   // and should be updated
-  naiveGetAllDifferentLines(data: any, channels: any[]) {
-    var lines = [];
+  naiveGetAllDifferentBars(data: any , channels: any[]) {
+    var bars = [];
     var saw = [];
     var ind = 0;
     for (var i = 0; i < data.length; i++) {
@@ -72,14 +63,8 @@ export default class LineChartQueryRenderer extends React.PureComponent<ILineCha
           if (!saw[key] && key !== 'name' && channels.find((x)=> {return x===key})) {
             saw[key] = {};
 
-            lines.push(
-              <Line type="monotone" 
-                dataKey={key}
-                key={'line' + i + key}
-                stroke={ThemeColors[ind % ThemeColors.length]}
-                dot={false}
-                ticksCount={5}
-              />
+            bars.push(
+              <Bar key={'bar' + i + key} dataKey={key} fill={ThemeColors[ind % ThemeColors.length]} />
             );
             ind++;
           }
@@ -87,28 +72,35 @@ export default class LineChartQueryRenderer extends React.PureComponent<ILineCha
       }
     }
 
-    return lines;
+    return bars;
   }
 
   render() {
-    
+   /* const data = [
+      {name: 'Page A', uv: 4000, pv: 2400, amt: 2400},
+      {name: 'Page B', uv: 3000, pv: 1398, amt: 2210},
+      {name: 'Page C', uv: 2000, pv: 9800, amt: 2290},
+      {name: 'Page D', uv: 2780, pv: 3908, amt: 2000},
+      {name: 'Page E', uv: 1890, pv: 4800, amt: 2181},
+      {name: 'Page F', uv: 2390, pv: 3800, amt: 2500},
+      {name: 'Page G', uv: 3490, pv: 4300, amt: 2100},
+];*/
     const { channels } = this.state;
-    var format = this.dateFormat;
-    var lines = this.naiveGetAllDifferentLines(this.props.results, channels);
+    var bars = this.naiveGetAllDifferentBars(this.props.results, channels);
 
     return (
-      <div className="LineChartQueryRenderer">
+      <div className="SimpleBarChartQueryRenderer">
         <Card title={this.props.title} subtitle={this.props.subtitle}>
           <ResponsiveContainer minHeight={300}>
-            <LineChart id={this.props.id} data={this.props.results} onClick={this.onDialogOpen}
-              margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-              <XAxis dataKey="name" tickFormatter={format} minTickGap={20} />
-              <YAxis type="number" domain={['dataMin', 'dataMax']} />
-              <CartesianGrid strokeDasharray="3 3" />
-              <Tooltip />
-              <Legend />
-              {lines}
-            </LineChart>
+            <BarChart width={600} height={300} data={this.props.results}
+            margin={{top: 5, right: 30, left: 20, bottom: 5}}>
+       <XAxis dataKey="name"/>
+       <YAxis/>
+       <CartesianGrid strokeDasharray="3 3"/>
+       <Tooltip/>
+       <Legend />
+       {bars}
+      </BarChart>
           </ResponsiveContainer>
         </Card>
       </div>

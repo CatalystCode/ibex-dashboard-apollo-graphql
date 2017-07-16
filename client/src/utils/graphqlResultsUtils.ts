@@ -66,10 +66,22 @@ export default {
     });
   },
 
-  pieChartsDataTransform: () => {
-    return [{ name: 'Group A', value: 400 }, { name: 'Group B', value: 300 },
-    { name: 'Group C', value: 300 }, { name: 'Group D', value: 200 },
-    { name: 'Group E', value: 278 }, { name: 'Group F', value: 189 }];
+  // the UI expect the following:
+  // [{ name: 'Group A', value: 400 }, { name: 'Group B', value: 300 },
+  //  { name: 'Group C', value: 300 }, { name: 'Group D', value: 200 },
+  //  { name: 'Group E', value: 278 }, { name: 'Group F', value: 189 }]
+  pieChartsDataTransform: (data) => {
+    if (!data) {
+      return [];
+    }
+
+    var res = [];
+
+    data = data[0];
+    for (var i = 0; i < data.labels.length; i++) {
+      res.push({ name: data.labels[i], value: data.values[i] });
+    }
+    return res;
   },
 
   DropDownComponentDataTransform: (channels: any) => {

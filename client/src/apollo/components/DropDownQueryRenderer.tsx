@@ -132,39 +132,6 @@ static defaultProps = {
     this.setState({ selectedValues: [] });
   }
 
-/*
-  static defaultProps = {
-    title: '',
-    subtitle: 'Select filter',
-    icon: 'more_vert',
-    selectAll: 'Enable filters',
-    selectNone: 'Clear filters'
-  };
-
-  state = {
-    overlay: false,
-    values: [],
-    selectedValues: [],
-    originalSelectedValues: []
-  };
-
-  constructor(props: any) {
-    super(props);
-
-    this.onChange = this.onChange.bind(this);
-  }
-
-  onChange(newValue: any, checked: boolean, event: any) {
-    // alert(this.props.id);
-    // alert(newValue);
-    var { selectedValues } = this.state;
-    var newSelectedValues = selectedValues;
-    FilterActions.filterChanged(this.state.overlay);
-    // call react action -  state changed
-
-    this.setState({ selectedValues: newSelectedValues, overlay: !this.state.overlay });
-  }*/
-
   render() {
     let { selectedValues, overlay } = this.state;
     overlay = true;
@@ -184,11 +151,11 @@ static defaultProps = {
             (
               <Checkbox
                 id={'drp' + i + item.id}
-                name="lineItems"
+                name={'drp' + i + item.id}
                 label={item.name}
                 defaultChecked
                 onChange={this.onChange.bind(null, item.name)}
-              checked={selectedValues.find((x) => x === item.name) !== undefined}
+                checked={selectedValues.find((x) => x === item.name) !== undefined}
               />
             )
           }
@@ -197,7 +164,7 @@ static defaultProps = {
     }
     return (
       <div className="DropDownQueryRenderer">
-        <Card title={'This should be a dropbox (someday)'} subtitle={'Yep'}>
+        <Card title={'Drop Box filters'} subtitle={'Yep'}>
           <div style={containerStyle} >
             <List>
               {items}

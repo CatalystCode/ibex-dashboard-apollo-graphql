@@ -21,6 +21,7 @@ import LineChartQueryRenderer, { ILineChartQueryRendererProps } from '../apollo/
 import StraightAnglePieChartQueryRenderer, { IStraightAnglePieChartQueryRendererProps } from
   '../apollo/components/StraightAnglePieChartQueryRenderer';
 import DropDownQueryRenderer, { IDropDownQueryRendererProps } from '../apollo/components/DropDownQueryRenderer';
+import SimpleBarChartQueryRenderer, { ISimpleBarChartQueryRendererProps } from '../apollo/components/SimpleBarChartQueryRenderer';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 import graphqlResultsTransformUtils from '../utils/graphqlResultsUtils';
@@ -46,12 +47,41 @@ query ($query:String!, $appId:String!, $apiKey:String!) {
 }
 `;
 
+const queryPieCharts = gql`
+query ($query:String!, $appId:String!, $apiKey:String!) {
+  pieCharts(query:$query, appId:$appId, apiKey:$apiKey, source:"" ) {
+    labels
+    values
+  }
+}
+`;
+
+const queryBarCharts = gql`
+query ($query:String!, $appId:String!, $apiKey:String!) {
+  barCharts(query:$query, appId:$appId, apiKey:$apiKey, source:"") {
+    seriesData {
+      label
+      x_values
+      y_values
+    }
+  }
+}
+`;
+
 interface ILineChartQueryResults {
   lineCharts: { seriesData: [{ label: any, x_values: any, y_values: any }] };
 }
 
+interface IPieChartQueryResults {
+  pieCharts: { labels: any, values: any };
+}
+
 interface IChannelsQueryResults {
   channels: { ids: any, values: any };
+}
+
+interface IBarChartQueryResults {
+  barCharts: { labels: any, values: any };
 }
 
 interface IQueryRendererWithDataProps {
@@ -80,19 +110,36 @@ const LineChartRendererGQL =
   })(LineChartQueryRenderer);
 
 const StraightAnglePieChartRendererGQL =
-  graphql<IQueryResults, IQueryRendererWithDataProps, IStraightAnglePieChartQueryRendererProps>(queryLineCharts, {
+  graphql<IPieChartQueryResults, IQueryRendererWithDataProps, IStraightAnglePieChartQueryRendererProps>(queryPieCharts, {
     options: (ownProps) => { return { variables: { query: ownProps.query, appId, apiKey } }; },
     props: ({ ownProps, data }) => {
       return {
         loading: data.loading,
         error: data.error && data.error.message,
         query: ownProps.query,
-        results: graphqlResultsTransformUtils.pieChartsDataTransform(),
+        results: graphqlResultsTransformUtils.pieChartsDataTransform(data.pieCharts),
         title: ownProps.title,
         subtitle: ownProps.subtitle,
       } as IStraightAnglePieChartQueryRendererProps;
     },
   })(StraightAnglePieChartQueryRenderer);
+
+
+const SimpleBarChartQueryRendererGQL =
+  graphql<IBarChartQueryResults, IQueryRendererWithDataProps, ISimpleBarChartQueryRendererProps>(queryBarCharts, {
+    options: (ownProps) => { return { variables: { query: ownProps.query, appId, apiKey } }; },
+    props: ({ ownProps, data }) => {
+      return {
+        loading: data.loading,
+        error: data.error && data.error.message,
+        query: ownProps.query,
+        results: graphqlResultsTransformUtils.lineChartsDataTransform(data.barCharts),
+        title: ownProps.title,
+        subtitle: ownProps.subtitle,
+        dialog: ownProps.dialog,
+      } as ISimpleBarChartQueryRendererProps;
+    },
+  })(SimpleBarChartQueryRenderer);
 
 const DropDownRendererGQL =
   graphql<IChannelsQueryResults, IQueryRendererWithDataProps, IDropDownQueryRendererProps>(queryChannels, {
@@ -116,7 +163,8 @@ export default class ElementConnectorForGQL {
     var types = {
       'LineChart': LineChartRendererGQL,
       'PieData': StraightAnglePieChartRendererGQL,
-      'DropDown': DropDownRendererGQL
+      'DropDown': DropDownRendererGQL,
+      'BarChart': SimpleBarChartQueryRendererGQL,
     };
 
     var elementsgql = [];

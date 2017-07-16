@@ -23,7 +23,7 @@ export default class LineChartQueryRenderer extends React.PureComponent<ILineCha
   constructor(props: any) {
     super(props);
 
-    this.state = {channels: []}
+    this.state = {channels: []};
     filterStore.listen((state) => {
       var channelsArray = state.filterState['channelsFilter1'];
       if (channelsArray) {
@@ -31,7 +31,6 @@ export default class LineChartQueryRenderer extends React.PureComponent<ILineCha
       }
     });
 
-    this.onChannelsFilterChange = this.onChannelsFilterChange.bind(this);
     this.onDialogOpen = this.onDialogOpen.bind(this);
   }
 
@@ -41,12 +40,6 @@ export default class LineChartQueryRenderer extends React.PureComponent<ILineCha
 
   hourFormat(time: string) {
     return moment(time).format('HH:mm');
-  }
-
-  onChannelsFilterChange() {
-    const { channels } = this.state;
-
-    alert('ok changing filters to' + channels)
   }
 
   onDialogOpen() {
@@ -69,11 +62,11 @@ export default class LineChartQueryRenderer extends React.PureComponent<ILineCha
     for (var i = 0; i < data.length; i++) {
       for (var key in data[i]) {
         if (data[i].hasOwnProperty(key)) {
-          if (!saw[key] && key !== 'name' && channels.find((x)=> {return x===key})) {
+          if (!saw[key] && key !== 'name' && channels.find((x) => { return x === key; })) {
             saw[key] = {};
 
             lines.push(
-              <Line type="monotone" 
+              <Line type="monotone"
                 dataKey={key}
                 key={'line' + i + key}
                 stroke={ThemeColors[ind % ThemeColors.length]}

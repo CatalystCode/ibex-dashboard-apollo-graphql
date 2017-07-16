@@ -22,7 +22,7 @@ export default class SimpleBarChartQueryRenderer extends
     constructor(props: any) {
     super(props);
 
-    this.state = {channels: []}
+    this.state = {channels: []};
     filterStore.listen((state) => {
       var channelsArray = state.filterState['channelsFilter1'];
       if (channelsArray) {
@@ -30,16 +30,9 @@ export default class SimpleBarChartQueryRenderer extends
       }
     });
 
-    this.onChannelsFilterChange = this.onChannelsFilterChange.bind(this);
     this.onDialogOpen = this.onDialogOpen.bind(this);
   }
  
-   onChannelsFilterChange() {
-    const { channels } = this.state;
-
-    alert('ok changing filters to' + channels)
-  }
-
   onDialogOpen() {
     var dialogId = this.props.dialog;
     if (!dialogId) {
@@ -53,14 +46,14 @@ export default class SimpleBarChartQueryRenderer extends
 
   // This method extracts from the data all the unique series names. not efficient at the moment
   // and should be updated
-  naiveGetAllDifferentBars(data: any , channels: any[]) {
+  naiveGetAllDifferentBars(data: any, channels: any[]) {
     var bars = [];
     var saw = [];
     var ind = 0;
     for (var i = 0; i < data.length; i++) {
       for (var key in data[i]) {
         if (data[i].hasOwnProperty(key)) {
-          if (!saw[key] && key !== 'name' && channels.find((x)=> {return x===key})) {
+          if (!saw[key] && key !== 'name' && channels.find((x) => { return x === key; })) {
             saw[key] = {};
 
             bars.push(
@@ -76,15 +69,6 @@ export default class SimpleBarChartQueryRenderer extends
   }
 
   render() {
-   /* const data = [
-      {name: 'Page A', uv: 4000, pv: 2400, amt: 2400},
-      {name: 'Page B', uv: 3000, pv: 1398, amt: 2210},
-      {name: 'Page C', uv: 2000, pv: 9800, amt: 2290},
-      {name: 'Page D', uv: 2780, pv: 3908, amt: 2000},
-      {name: 'Page E', uv: 1890, pv: 4800, amt: 2181},
-      {name: 'Page F', uv: 2390, pv: 3800, amt: 2500},
-      {name: 'Page G', uv: 3490, pv: 4300, amt: 2100},
-];*/
     const { channels } = this.state;
     var bars = this.naiveGetAllDifferentBars(this.props.results, channels);
 

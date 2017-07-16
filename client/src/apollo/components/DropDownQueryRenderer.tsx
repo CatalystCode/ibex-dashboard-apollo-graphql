@@ -92,7 +92,6 @@ static defaultProps = {
     if (!this.didSelectionChange()) {
       return;
     }
-    //this.trigger('onChange', selectedValues);
   }
 
   didSelectionChange(): boolean {

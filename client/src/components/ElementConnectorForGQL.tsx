@@ -21,7 +21,8 @@ import LineChartQueryRenderer, { ILineChartQueryRendererProps } from '../apollo/
 import StraightAnglePieChartQueryRenderer, { IStraightAnglePieChartQueryRendererProps } from
   '../apollo/components/StraightAnglePieChartQueryRenderer';
 import DropDownQueryRenderer, { IDropDownQueryRendererProps } from '../apollo/components/DropDownQueryRenderer';
-import SimpleBarChartQueryRenderer, { ISimpleBarChartQueryRendererProps } from '../apollo/components/SimpleBarChartQueryRenderer';
+import SimpleBarChartQueryRenderer, { ISimpleBarChartQueryRendererProps } from 
+  '../apollo/components/SimpleBarChartQueryRenderer';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 import graphqlResultsTransformUtils from '../utils/graphqlResultsUtils';
@@ -110,20 +111,20 @@ const LineChartRendererGQL =
   })(LineChartQueryRenderer);
 
 const StraightAnglePieChartRendererGQL =
-  graphql<IPieChartQueryResults, IQueryRendererWithDataProps, IStraightAnglePieChartQueryRendererProps>(queryPieCharts, {
-    options: (ownProps) => { return { variables: { query: ownProps.query, appId, apiKey } }; },
-    props: ({ ownProps, data }) => {
-      return {
-        loading: data.loading,
-        error: data.error && data.error.message,
-        query: ownProps.query,
-        results: graphqlResultsTransformUtils.pieChartsDataTransform(data.pieCharts),
-        title: ownProps.title,
-        subtitle: ownProps.subtitle,
-      } as IStraightAnglePieChartQueryRendererProps;
-    },
-  })(StraightAnglePieChartQueryRenderer);
-
+  graphql<IPieChartQueryResults, IQueryRendererWithDataProps, IStraightAnglePieChartQueryRendererProps>(
+    queryPieCharts, {
+      options: (ownProps) => { return { variables: { query: ownProps.query, appId, apiKey } }; },
+      props: ({ ownProps, data }) => {
+        return {
+          loading: data.loading,
+          error: data.error && data.error.message,
+          query: ownProps.query,
+          results: graphqlResultsTransformUtils.pieChartsDataTransform(data.pieCharts),
+          title: ownProps.title,
+          subtitle: ownProps.subtitle,
+        } as IStraightAnglePieChartQueryRendererProps;
+      },
+    })(StraightAnglePieChartQueryRenderer);
 
 const SimpleBarChartQueryRendererGQL =
   graphql<IBarChartQueryResults, IQueryRendererWithDataProps, ISimpleBarChartQueryRendererProps>(queryBarCharts, {

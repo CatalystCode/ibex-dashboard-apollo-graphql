@@ -37,7 +37,6 @@ export default class Dialog extends React.PureComponent<IDialogProps, IDialogSta
   constructor(props: IDialogProps) {
     super(props);
     
-
     this.state = DialogsStore.getState();
     this.onChange = this.onChange.bind(this);
 
@@ -50,13 +49,13 @@ export default class Dialog extends React.PureComponent<IDialogProps, IDialogSta
       }
     };
     
-    //DataSourceConnector.createDataSources({ dataSources: [ dialogDS ] }, this.props.dashboard.config.connections);
+    // DataSourceConnector.createDataSources({ dataSources: [ dialogDS ] }, this.props.dashboard.config.connections);
 
     // Adding other data sources
-    //DataSourceConnector.createDataSources(this.props.dialogData, this.props.dashboard.config.connections);
+    // DataSourceConnector.createDataSources(this.props.dialogData, this.props.dashboard.config.connections);
 
     var layouts = ElementConnector.loadLayoutFromDashboard(this.props.dashboard, this.props.dashboard);
-    //var layouts = ElementConnectorGQL.loadLayoutFromDashboard(this.props.dialogData, this.props.dashboard);
+    // var layouts = ElementConnectorGQL.loadLayoutFromDashboard(this.props.dialogData, this.props.dashboard);
     
     this.layouts = layouts;
     (this.state as any).layouts = {  };
@@ -120,8 +119,7 @@ export default class Dialog extends React.PureComponent<IDialogProps, IDialogSta
     }
 
     // Creating visual elements
-    //var elements = ElementConnector.loadElementsFromDashboard(dialogData, layout);
-    // remove the hard coded 0
+    // var elements = ElementConnector.loadElementsFromDashboard(dialogData, layout);
     var elements = ElementConnectorGQL.loadGraphqlElementsFromDashboard(dialogData.visual, layout);
 
     let grid = {

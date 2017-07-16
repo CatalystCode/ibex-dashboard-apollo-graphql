@@ -3,12 +3,12 @@ import alt, { AbstractStoreModel } from '../alt';
 import filterActions from '../actions/FilterActions';
 
 interface IFilterState {
-  filterId: string,
-  values: string[]
+  filterId: string;
+  values: string[];
 }
 
 interface IFilterStoreState {
-  filterState: IFilterState[]
+  filterState: IFilterState[];
 }
 
 class FilterStore extends AbstractStoreModel<IFilterStoreState> implements IFilterStoreState {
@@ -25,7 +25,7 @@ class FilterStore extends AbstractStoreModel<IFilterStoreState> implements IFilt
     });
   }
   
-  updateItems(filter:any) {
+  updateItems(filter: any) {
     this.filterState[filter.filterId] = filter.selectedValues;
   }
 }

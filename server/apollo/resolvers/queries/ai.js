@@ -21,7 +21,8 @@ const getPredefinedQuery = (queryId) => {
   savedQueries['predefined_users_timeline2'] = `customEvents | where name == 'Activity' |
     summarize count=count(customDimensions.score) by bin(timestamp, 5m), name, channel=tostring(customDimensions.channel) |
     order by timestamp asc`;
-  savedQueries['predefined_barchart1'] = savedQueries['predefined_users_timeline2'];
+  savedQueries['predefined_barchart1'] = `customEvents | where name == 'Activity' |
+  summarize count() by client_City, name, channel=tostring(customDimensions.channel)`;
 
   var actualQuery = savedQueries[queryId];
   return actualQuery;
@@ -103,7 +104,6 @@ const barChartQuery = (root, { query, appId, apiKey }) => {
     var queryToExecute = q ? q : query;
     var aiResultPromise = executeAiQuery(queryToExecute, appId, apiKey)
       .then((data) => {
-        // not a type, it is similar to line chart
         var res = aiConvertors.toLineChart(data.body);
         resolve([res]);
       });

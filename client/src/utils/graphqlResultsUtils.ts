@@ -31,7 +31,7 @@ export default {
   // { name: 'Page E', uv: 1600, pv: 2050, amt: 3281 },
   // { name: 'Page F', uv: 1080, pv: 2020, amt: 9200 },
   // { name: 'Page G', uv: 1060, pv: 2100, amt: 1200 } ]
-  lineChartsDataTransform: (data) => {
+  lineChartsDataTransform: (data, shouldSortByDate) => {
     if (!data) {
       return [];
     }
@@ -61,9 +61,14 @@ export default {
       }
     }
 
-    return formatted.sort(function (a: any, b: any) {
-      return Date.parse(a.name) - Date.parse(b.name);
-    });
+    // only if the first column is a date column
+    if (shouldSortByDate) {
+      return formatted.sort(function (a: any, b: any) {
+        return Date.parse(a.name) - Date.parse(b.name);
+      });
+    }
+
+    return formatted;
   },
 
   // the UI expect the following:

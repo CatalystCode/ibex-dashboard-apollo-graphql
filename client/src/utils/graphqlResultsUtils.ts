@@ -36,24 +36,50 @@ export default {
       return [];
     }
 
-    var dictionary = [];
+    let dictionary = [];
 
     data = data[0].seriesData;
-    var formatted = [];
-    for (var i = 0; i < data.length; i++) {
-      for (var j = 0; j < data[i].x_values.length; j++) {
+    let knownSeriesNames = [];
+    // at the end of this loop statement you end up with a dictionary of xValues and their matching points:
+    // e.g. [13/7/2017] = [ {"skype", 3}, {"webchat", 4}]
+    // for each series
+    for (let i = 0; i < data.length; i++) {
+      // each point
+      for (let j = 0; j < data[i].x_values.length; j++) {
         if (!dictionary[data[i].x_values[j]]) {
           dictionary[data[i].x_values[j]] = [];
         }
         dictionary[data[i].x_values[j]].push({ label: data[i].label, value: data[i].y_values[j] });
+        if (!knownSeriesNames[data[i].label]) {
+          knownSeriesNames[data[i].label] = 1;
+        }
       }
     }
 
-    for (var key in dictionary) {
+    // at the end of this loop statement you end up with a dictionary of xValues and their matching points same as
+    // above, only that missing labels will now have 0 value added
+    // e.g. [13/7/2017] = [ { "skype", 3 }, { "webchat", 4 }, { "missingChannel", 0 } ]
+    let expectedLength = Object.keys(knownSeriesNames).length;
+    for (let key in dictionary) {
       if (dictionary.hasOwnProperty(key)) {
-        var items = dictionary[key];
-        var item = { name: key };
-        for (var k = 0; k < items.length; k++) {
+        let items = dictionary[key];
+        if (items.length !== expectedLength) {
+          for (let i = 0; i < expectedLength; i++) {
+            let missingLabel = Object.keys(knownSeriesNames)[i];
+            if (!dictionary[key].find((x) => x.label === missingLabel)) {
+              dictionary[key].push({ label: missingLabel, value: 0 });
+            }
+          }
+        }
+      }
+    }
+
+    let formatted = [];
+    for (let key in dictionary) {
+      if (dictionary.hasOwnProperty(key)) {
+        let items = dictionary[key];
+        let item = { name: key };
+        for (let k = 0; k < items.length; k++) {
           item[items[k].label] = items[k].value;
         }
 

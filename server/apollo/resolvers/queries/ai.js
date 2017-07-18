@@ -17,7 +17,7 @@ const getPredefinedQuery = (queryId) => {
   savedQueries['predefined_sentiment1'] = `customEvents | where name startswith 'MBFEvent.Sentiment' |
     extend score=customDimensions.score|
     summarize sentiment=avg(todouble(score))`;
-  savedQueries['predefined_pie1'] = `customEvents | summarize count=dcount(tostring(customDimensions.from)), dcount(tostring(customDimensions.callstack_length)), dcount(tostring(customDimensions.channel))`;
+  savedQueries['predefined_pie1'] = `customEvents | summarize Distinct_From_Addresses_Count = dcount(tostring(customDimensions.from)), Distinct_Callstack = dcount(tostring(customDimensions.callstack_length)), Distinct_Channel_Count = dcount(tostring(customDimensions.channel))`;
   savedQueries['predefined_users_timeline2'] = `customEvents | where name == 'Activity' |
     summarize count=count(customDimensions.score) by bin(timestamp, 5m), name, channel=tostring(customDimensions.channel) |
     order by timestamp asc`;

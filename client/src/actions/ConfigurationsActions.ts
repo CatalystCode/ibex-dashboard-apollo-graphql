@@ -313,6 +313,12 @@ class ConfigurationsActions extends AbstractActions implements IConfigurationsAc
   }
 
   private fixCalculatedProperties(dashboard: IDashboardConfig): void {
+
+    // for backward compatible
+    if (!dashboard.dataSources) {
+      return;
+    }
+
     dashboard.dataSources.forEach(dataSource => {
       let calculated: string = dataSource.calculated as any;
       if (calculated) {

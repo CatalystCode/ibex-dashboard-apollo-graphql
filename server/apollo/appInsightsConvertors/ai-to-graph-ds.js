@@ -13,38 +13,11 @@ const toIdsAndValuesArrays = (appInsightsQueryResult) => {
 
 const toLineChart = (appInsightsQueryResult) => {
   var countColumn = 3;
-  var timeColumn = 0;
-  var channelColumn = 2;
-  var nameColumn = 1;
-  var jsonObj = JSON.parse(appInsightsQueryResult);
-
-  var seriesArray = {};
-  for (var i = 0; i < jsonObj.Tables[0].Rows.length; i++) {
-    var channelName = jsonObj.Tables[0].Rows[i][channelColumn];
-    if (!seriesArray[channelName]) {
-      seriesArray[channelName] = {};
-      seriesArray[channelName] = { label: channelName, x_values: [], y_values: [] };
-    }
-
-    seriesArray[channelName].x_values.push(jsonObj.Tables[0].Rows[i][timeColumn]);
-    seriesArray[channelName].y_values.push(jsonObj.Tables[0].Rows[i][countColumn]);
-
-  }
-
-  var allSeries = []
-  for (var key in seriesArray) {
-    allSeries.push(seriesArray[key]);
-  }
-
-  return { seriesData: allSeries }
-};
-
-const toBarChart = (appInsightsQueryResult) => {
-  var countColumn = 3;
   var groupColumn = 0;
   var channelColumn = 2;
   var nameColumn = 1;
   var jsonObj = JSON.parse(appInsightsQueryResult);
+
   var seriesArray = {};
   for (var i = 0; i < jsonObj.Tables[0].Rows.length; i++) {
     var channelName = jsonObj.Tables[0].Rows[i][channelColumn];
@@ -63,7 +36,7 @@ const toBarChart = (appInsightsQueryResult) => {
     allSeries.push(seriesArray[key]);
   }
 
-  return { seriesData: allSeries }
+  return { seriesData: allSeries };
 };
 
 const toSentimentFormat = (appInsightsQueryResult) => {
@@ -101,5 +74,4 @@ module.exports = {
   toLineChart,
   toSentimentFormat,
   toPieChartData,
-  toBarChart,
 };

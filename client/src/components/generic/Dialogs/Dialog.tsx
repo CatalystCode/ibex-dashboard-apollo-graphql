@@ -136,9 +136,15 @@ export default class Dialog extends React.PureComponent<IDialogProps, IDialogSta
         title={title}
         focusOnMount={false}
         onHide={this.closeDialog}
-       // dialogStyle={{ width: /*dialogData.width ||*/ '80%', overflow: 'auto' }}
+        dialogStyle={{ width: '50%', overflow: 'auto' }}
+        // dialogStyle={{ width: /*dialogData.width ||*/ '80%', overflow: 'auto' }}
         contentStyle={{ padding: '0' }}
       >
+        {elements}
+      </MDDialog>
+
+      // temp
+      /*
         <ResponsiveReactGridLayout
           {...grid}
 
@@ -155,7 +161,8 @@ export default class Dialog extends React.PureComponent<IDialogProps, IDialogSta
         >
           {elements}
         </ResponsiveReactGridLayout>
-      </MDDialog>
+      */
+      
     );
   }
 }

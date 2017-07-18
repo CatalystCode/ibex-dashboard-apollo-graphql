@@ -59,6 +59,10 @@ export class DataSourceConnector {
   }
 
   static createDataSources(dsContainer: IDataSourceContainer, connections: IConnections) {
+    if (!dsContainer.dataSources) {
+      return;
+    }
+
     dsContainer.dataSources.forEach(source => {
       var dataSource = DataSourceConnector.createDataSource(source, connections);
       DataSourceConnector.connectDataSource(dataSource);

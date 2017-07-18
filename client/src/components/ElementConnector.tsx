@@ -10,6 +10,11 @@ export default class ElementConnector {
   static loadLayoutFromDashboard(elementsContainer: IElementsContainer, dashboard: IDashboardConfig): ILayouts {
 
     var layouts = {};
+
+    // backward compatible
+    if (!elementsContainer.elements) {
+      return layouts;
+    }
     _.each(dashboard.config.layout.cols, (totalColumns, key) => {
 
       let layoutIDs = {};
@@ -56,6 +61,11 @@ export default class ElementConnector {
     var elementId = {};
     var visibilityFlags = (VisibilityStore.getState() || {}).flags || {};
 
+    // for backward compatible.
+    if (!dashboard.elements) {
+      return [];
+    }
+
     dashboard.elements.forEach((element, idx) => {
       var ReactElement = plugins[element.type];
       var { id, dependencies, actions, props, title, subtitle, size, theme, location } = element;
@@ -101,6 +111,12 @@ export default class ElementConnector {
   } {
     var filters = [];
     var additionalFilters = [];
+
+    // for backward compatible.
+    if (!dashboard.filters) {
+      return { filters: [], additionalFilters: [] };
+    }
+    
     dashboard.filters.forEach((element, idx) => {
       var ReactElement = plugins[element.type];
       (element.first ? filters : additionalFilters).push(

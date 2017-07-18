@@ -49,13 +49,13 @@ const classNames = {
 };
 
 export default class DropDownQueryRenderer extends React.PureComponent<IDropDownQueryRendererProps, any> {
-static defaultProps = {
+  /*static defaultProps = {
     title: '',
     subtitle: 'Select filter',
     icon: 'more_vert',
     selectAll: 'Enable filters',
     selectNone: 'Clear filters'
-  };
+  };*/
 
   state = {
     overlay: false,

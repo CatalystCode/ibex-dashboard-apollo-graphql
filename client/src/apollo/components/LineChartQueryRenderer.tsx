@@ -13,6 +13,7 @@ var { ThemeColors } = colors;
 export interface ILineChartQueryRendererProps {
   results: any;
   dialog: string;
+  filter: string;
   title: string;
   subtitle: string;
   id: string;
@@ -25,7 +26,7 @@ export default class LineChartQueryRenderer extends React.PureComponent<ILineCha
 
     this.state = {channels: []};
     filterStore.listen((state) => {
-      var channelsArray = state.filterState['channelsFilter1'];
+      var channelsArray = state.filterState[this.props.filter];
       if (channelsArray) {
         this.setState({channels: channelsArray});
       }
@@ -62,7 +63,11 @@ export default class LineChartQueryRenderer extends React.PureComponent<ILineCha
     for (var i = 0; i < data.length; i++) {
       for (var key in data[i]) {
         if (data[i].hasOwnProperty(key)) {
-          if (!saw[key] && key !== 'name' && channels.find((x) => { return x === key; })) {
+          if ((channels.find((x) => { return x === key; }) == undefined) && (this.props.filter)) {
+            continue;
+          }
+
+          if (!saw[key] && key !== 'name') {
             saw[key] = {};
 
             lines.push(

@@ -91,6 +91,7 @@ interface IQueryRendererWithDataProps {
   title: string;
   subtitle: string;
   dialog: string;
+  filter: string;
 }
 
 const LineChartRendererGQL =
@@ -106,6 +107,7 @@ const LineChartRendererGQL =
         title: ownProps.title,
         subtitle: ownProps.subtitle,
         dialog: ownProps.dialog,
+        filter: ownProps.filter,
       } as ILineChartQueryRendererProps;
     },
   })(LineChartQueryRenderer);
@@ -183,7 +185,8 @@ export default class ElementConnectorForGQL {
             id={visual[i].id}
             title={visual[i].title}
             subtitle={visual[i].subtitle}
-            dialog={visual[i].dialog} />
+            dialog={visual[i].dialog}
+            filter={visual[i].filter} />
         </div>
       );
     }

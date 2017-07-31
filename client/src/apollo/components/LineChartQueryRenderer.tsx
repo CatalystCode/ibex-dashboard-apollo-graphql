@@ -2,7 +2,7 @@ import * as React from 'react';
 import Card from '../../components/Card';
 import * as moment from 'moment';
 
-import filterStore from '../../stores/FilterStore';
+//import filterStore from '../../stores/FilterStore';
 import dialogActions from '../../components/generic/Dialogs/DialogsActions';
 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
@@ -13,7 +13,8 @@ var { ThemeColors } = colors;
 export interface ILineChartQueryRendererProps {
   results: any;
   dialog: string;
-  filter: string;
+  filterValues: [string];
+  filterKey: string;
   title: string;
   subtitle: string;
   id: string;
@@ -23,14 +24,6 @@ export default class LineChartQueryRenderer extends React.PureComponent<ILineCha
 
   constructor(props: any) {
     super(props);
-
-    this.state = {channels: []};
-    filterStore.listen((state) => {
-      var channelsArray = state.filterState[this.props.filter];
-      if (channelsArray) {
-        this.setState({channels: channelsArray});
-      }
-    });
 
     this.onDialogOpen = this.onDialogOpen.bind(this);
   }
@@ -56,16 +49,13 @@ export default class LineChartQueryRenderer extends React.PureComponent<ILineCha
 
   // This method extracts from the data all the unique series names. not efficient at the moment
   // and should be updated
-  naiveGetAllDifferentLines(data: any, channels: any[]) {
+  naiveGetAllDifferentLines(data: any) {
     var lines = [];
     var saw = [];
     var ind = 0;
     for (var i = 0; i < data.length; i++) {
       for (var key in data[i]) {
         if (data[i].hasOwnProperty(key)) {
-          if ((channels.find((x) => { return x === key; }) == undefined) && (this.props.filter)) {
-            continue;
-          }
 
           if (!saw[key] && key !== 'name') {
             saw[key] = {};
@@ -90,9 +80,8 @@ export default class LineChartQueryRenderer extends React.PureComponent<ILineCha
 
   render() {
     
-    const { channels } = this.state;
     var format = this.dateFormat;
-    var lines = this.naiveGetAllDifferentLines(this.props.results, channels);
+    var lines = this.naiveGetAllDifferentLines(this.props.results);
 
     return (
       <div className="LineChartQueryRenderer">

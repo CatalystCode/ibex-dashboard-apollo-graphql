@@ -107,7 +107,8 @@ interface IVisualElement {
   subtitle: string,
   id: string,
   dialog: string,
-  filter: string,
+  filterKey: string,
+  filterId: string,
   size: { w: number, h: number };
 }
 

@@ -72,10 +72,18 @@ const intentsQuery = (root, { query, appId, apiKey }) => {
   });
 };
 
-const lineChartQuery = (root, { query, appId, apiKey }) => {
+const lineChartQuery = (root, { query, appId, apiKey, filterKey, filterValues }) => {
   return new Promise((resolve, reject) => {
     var q = getPredefinedQuery(query);
     var queryToExecute = q ? q : query;
+    if (filterKey && filterValues && filterValues.length > 0) {
+      queryToExecute = queryToExecute + " | where "
+      for (let i = 0; i< filterValues.length; i++) {
+       queryToExecute = queryToExecute + filterKey + " == '" + filterValues[i] + "' or ";
+      }
+      // trim last or
+      queryToExecute = queryToExecute.substr(0, queryToExecute.length - 4);
+    }
     var aiResultPromise = executeAiQuery(queryToExecute, appId, apiKey)
       .then((data) => {
         var res = aiConvertors.toLineChart(data.body);
@@ -98,10 +106,18 @@ const pieChartQuery = (root, { query, appId, apiKey }) => {
   });
 };
 
-const barChartQuery = (root, { query, appId, apiKey }) => {
+const barChartQuery = (root, { query, appId, apiKey, filterKey, filterValues }) => {
   return new Promise((resolve, reject) => {
     var q = getPredefinedQuery(query);
     var queryToExecute = q ? q : query;
+    if (filterKey && filterValues && filterValues.length > 0) {
+      queryToExecute = queryToExecute + " | where "
+      for (let i = 0; i< filterValues.length; i++) {
+       queryToExecute = queryToExecute + filterKey + " == '" + filterValues[i] + "' or ";
+      }
+      // trim last or
+      queryToExecute = queryToExecute.substr(0, queryToExecute.length - 4);
+    }
     var aiResultPromise = executeAiQuery(queryToExecute, appId, apiKey)
       .then((data) => {
         var res = aiConvertors.toLineChart(data.body);

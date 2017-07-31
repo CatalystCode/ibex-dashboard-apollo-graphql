@@ -17,6 +17,8 @@ var ResponsiveReactGridLayout = ReactGridLayout.Responsive;
 var WidthProvider = ReactGridLayout.WidthProvider;
 ResponsiveReactGridLayout = WidthProvider(ResponsiveReactGridLayout);
 
+var e =  new ElementConnectorGQL();
+
 interface IDialogProps {
   dialogData: IVisualDialog; // IDialog;
   dashboard: IDashboardConfig;

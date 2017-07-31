@@ -26,7 +26,14 @@ class FilterStore extends AbstractStoreModel<IFilterStoreState> implements IFilt
   }
   
   updateItems(filter: any) {
-    this.filterState[filter.filterId] = filter.selectedValues;
+    var newObj = {filterId: filter.filterId, values : filter.selectedValues};
+    for (let i =0 ; i< this.filterState.length; i++){
+      if (this.filterState[i].filterId ===  filter.filterId) {
+        this.filterState[i] = newObj;
+        return;
+      }
+    }
+    this.filterState.push(newObj);
   }
 }
 

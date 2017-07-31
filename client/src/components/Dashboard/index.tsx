@@ -25,6 +25,8 @@ import VisibilityStore from '../../stores/VisibilityStore';
 
 import {Editor, EditorActions} from './Editor';
 
+import filterStore from '../../stores/FilterStore';
+
 const renderHTML = require('react-render-html');
 
 import List from 'react-md/lib/Lists/List';
@@ -53,6 +55,7 @@ interface IDashboardState {
   visibilityFlags?: IDict<boolean>;
   infoVisible?: boolean;
   infoHtml?: string;
+  filtersTemp?: number;
 }
 
 export default class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
@@ -73,6 +76,7 @@ export default class Dashboard extends React.Component<IDashboardProps, IDashboa
     visibilityFlags: {},
     infoVisible: false,
     infoHtml: '',
+    filtersTemp: 0
   };
 
   constructor(props: IDashboardProps) {
@@ -94,9 +98,19 @@ export default class Dashboard extends React.Component<IDashboardProps, IDashboa
     this.onChangeDownloadFormat = this.onChangeDownloadFormat.bind(this);
     this.onDownloadDashboard = this.onDownloadDashboard.bind(this);
     
+    this.temp = this.temp.bind(this);
+
     VisibilityStore.listen(state => {
       this.setState({ visibilityFlags: state.flags });
     });
+
+    filterStore.listen((state) => {
+     this.temp(state);
+    });
+  }
+
+  temp(state) {
+      this.setState({filtersTemp: this.state.filtersTemp + 1})
   }
 
   componentDidMount() {

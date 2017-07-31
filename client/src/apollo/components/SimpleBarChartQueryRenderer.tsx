@@ -3,7 +3,6 @@ import Card from '../../components/Card';
 import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from
   'recharts';
 
-import filterStore from '../../stores/FilterStore';
 import dialogActions from '../../components/generic/Dialogs/DialogsActions';
 
 import colors from '../../components/colors';
@@ -14,6 +13,8 @@ export interface ISimpleBarChartQueryRendererProps {
   dialog: string;
   title: string;
   subtitle: string;
+  filterValues: [string];
+  filterKey: string;
 }
 
 export default class SimpleBarChartQueryRenderer extends
@@ -21,14 +22,6 @@ export default class SimpleBarChartQueryRenderer extends
 
     constructor(props: any) {
     super(props);
-
-    this.state = {channels: []};
-    filterStore.listen((state) => {
-      var channelsArray = state.filterState['channelsFilter1'];
-      if (channelsArray) {
-        this.setState({channels: channelsArray});
-      }
-    });
 
     this.onDialogOpen = this.onDialogOpen.bind(this);
   }
@@ -46,14 +39,14 @@ export default class SimpleBarChartQueryRenderer extends
 
   // This method extracts from the data all the unique series names. not efficient at the moment
   // and should be updated
-  naiveGetAllDifferentBars(data: any, channels: any[]) {
+  naiveGetAllDifferentBars(data: any/*, channels: any[]*/) {
     var bars = [];
     var saw = [];
     var ind = 0;
     for (var i = 0; i < data.length; i++) {
       for (var key in data[i]) {
         if (data[i].hasOwnProperty(key)) {
-          if (!saw[key] && key !== 'name' && channels.find((x) => { return x === key; })) {
+          if (!saw[key] && key !== 'name' ){//&& channels.find((x) => { return x === key; })) {
             saw[key] = {};
 
             bars.push(
@@ -69,8 +62,8 @@ export default class SimpleBarChartQueryRenderer extends
   }
 
   render() {
-    const { channels } = this.state;
-    var bars = this.naiveGetAllDifferentBars(this.props.results, channels);
+    //const { channels } = this.state;
+    var bars = this.naiveGetAllDifferentBars(this.props.results/*, channels*/);
 
     return (
       <div className="SimpleBarChartQueryRenderer">

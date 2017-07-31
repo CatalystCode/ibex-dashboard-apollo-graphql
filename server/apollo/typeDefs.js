@@ -5,10 +5,10 @@ const typeDefs = `
 type Query {
   channels(query:String!, appId:String!, apiKey:String!): [Channel]
   intents(query:String!, appId:String!, apiKey:String!): [Intent]
-  lineCharts(query:String!,  appId:String!, apiKey:String!): [LineChart]
+  lineCharts(query:String!,  appId:String!, apiKey:String!, filterKey:String, filterValues:[String]): [LineChart]
   sentiments(query:String!, source:String!, appId:String!, apiKey:String!): [Sentiment]
   pieCharts(query:String!, source:String!, appId:String!, apiKey:String!): [PieChart]
-  barCharts(query:String!, source:String!, appId:String!, apiKey:String!): [BarChart]
+  barCharts(query:String!, source:String!, appId:String!, apiKey:String!, filterKey:String, filterValues:[String]): [BarChart]
 }
 
 type Channel {

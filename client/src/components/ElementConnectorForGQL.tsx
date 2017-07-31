@@ -6,6 +6,8 @@ import { DataSourceConnector } from '../data-sources/DataSourceConnector';
 import VisibilityActions from '../actions/VisibilityActions';
 import VisibilityStore from '../stores/VisibilityStore';
 
+import filterStore from '../stores/FilterStore';
+
 import ListItemControl from 'react-md/lib/Lists/ListItemControl';
 import Checkbox from 'react-md/lib/SelectionControls/Checkbox';
 
@@ -27,9 +29,12 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 
 import graphqlResultsTransformUtils from '../utils/graphqlResultsUtils';
 
+var channel =[];
+
+
 const queryLineCharts = gql`
-query ($query:String!, $appId:String!, $apiKey:String!) {
-  lineCharts(query:$query, appId:$appId, apiKey:$apiKey) {
+query ($query:String!, $appId:String!, $apiKey:String!, $filterKey:String, $filterValues:[String]) {
+  lineCharts(query:$query, appId:$appId, apiKey:$apiKey, filterKey:$filterKey, filterValues:$filterValues) {
     seriesData {
       label
       x_values
@@ -58,8 +63,8 @@ query ($query:String!, $appId:String!, $apiKey:String!) {
 `;
 
 const queryBarCharts = gql`
-query ($query:String!, $appId:String!, $apiKey:String!) {
-  barCharts(query:$query, appId:$appId, apiKey:$apiKey, source:"") {
+query ($query:String!, $appId:String!, $apiKey:String!, $filterKey:String, $filterValues:[String]) {
+  barCharts(query:$query, appId:$appId, apiKey:$apiKey, source:"", filterKey:$filterKey, filterValues:$filterValues) {
     seriesData {
       label
       x_values
@@ -91,12 +96,13 @@ interface IQueryRendererWithDataProps {
   title: string;
   subtitle: string;
   dialog: string;
-  filter: string;
+  filterValues: [string];
+  filterKey: string;
 }
 
 const LineChartRendererGQL =
   graphql<ILineChartQueryResults, IQueryRendererWithDataProps, ILineChartQueryRendererProps>(queryLineCharts, {
-    options: (ownProps) => { return { variables: { query: ownProps.query, appId, apiKey } }; },
+    options: (ownProps) => { return { variables: { query: ownProps.query, appId, apiKey, filterKey:ownProps.filterKey, filterValues:ownProps.filterValues } }; },
     props: ({ ownProps, data }) => {
       return {
         loading: data.loading,
@@ -107,7 +113,8 @@ const LineChartRendererGQL =
         title: ownProps.title,
         subtitle: ownProps.subtitle,
         dialog: ownProps.dialog,
-        filter: ownProps.filter,
+        filterValues: ownProps.filterValues,
+        filterKey: ownProps.filterKey,
       } as ILineChartQueryRendererProps;
     },
   })(LineChartQueryRenderer);
@@ -130,7 +137,7 @@ const StraightAnglePieChartRendererGQL =
 
 const SimpleBarChartQueryRendererGQL =
   graphql<IBarChartQueryResults, IQueryRendererWithDataProps, ISimpleBarChartQueryRendererProps>(queryBarCharts, {
-    options: (ownProps) => { return { variables: { query: ownProps.query, appId, apiKey } }; },
+    options: (ownProps) => { return { variables: { query: ownProps.query, appId, apiKey, filterKey:ownProps.filterKey, filterValues:ownProps.filterValues } }; },
     props: ({ ownProps, data }) => {
       return {
         loading: data.loading,
@@ -140,6 +147,8 @@ const SimpleBarChartQueryRendererGQL =
         title: ownProps.title,
         subtitle: ownProps.subtitle,
         dialog: ownProps.dialog,
+        filterValues: ownProps.filterValues,
+        filterKey: ownProps.filterKey,
       } as ISimpleBarChartQueryRendererProps;
     },
   })(SimpleBarChartQueryRenderer);
@@ -160,7 +169,19 @@ const DropDownRendererGQL =
     },
   })(DropDownQueryRenderer);
 
+var filtersData = {};
+
 export default class ElementConnectorForGQL {
+
+  constructor() {
+
+    filterStore.listen((state) => {
+      for (let i = 0; i < state.filterState.length; i++) {
+        var filterValuesArray = state.filterState[i].values;
+        filtersData[state.filterState[i].filterId] = filterValuesArray;
+      }
+    });
+  }
 
   static loadGraphqlElementsFromDashboard(visual: IVisualElement[], layout: ILayout[]): React.Component<any, any>[] {
     var types = {
@@ -186,7 +207,8 @@ export default class ElementConnectorForGQL {
             title={visual[i].title}
             subtitle={visual[i].subtitle}
             dialog={visual[i].dialog}
-            filter={visual[i].filter} />
+            filterValues={filtersData[visual[i].filterId]}
+            filterKey={visual[i].filterKey} />
         </div>
       );
     }

@@ -41,12 +41,10 @@ export default class LineChartQueryRenderer extends React.PureComponent<ILineCha
       return;
     }
 
-    dialogActions.openDialog(dialogId, {});
-
-    // this.setState({ dialogId });
+    dialogActions.openDialog(dialogId, { title: 'More info...' });
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps: any, nextState: any) {
     return !nextProps.loading;
   }
 

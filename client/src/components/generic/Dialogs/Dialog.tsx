@@ -106,6 +106,8 @@ export default class Dialog extends React.PureComponent<IDialogProps, IDialogSta
       title = '';
     }
     var visible = id === dialogId;
+    let { keyToFilterOn } = dialogArgs || { keyToFilterOn: '' };
+    let { valuesToFilterOn } = dialogArgs || { valuesToFilterOn: '' };
 
     if (!visible) {
       return null;
@@ -122,7 +124,12 @@ export default class Dialog extends React.PureComponent<IDialogProps, IDialogSta
 
     // Creating visual elements
     // var elements = ElementConnector.loadElementsFromDashboard(dialogData, layout);
-    var elements = ElementConnectorGQL.loadGraphqlElementsFromDashboard(dialogData.visual, layout);
+    var elements =
+      ElementConnectorGQL.loadGraphqlElementsFromDashboardDialogs(
+        dialogData.visual,
+        layout,
+        keyToFilterOn,
+        valuesToFilterOn);
 
     let grid = {
       className: 'layout',

@@ -23,14 +23,13 @@ import LineChartQueryRenderer, { ILineChartQueryRendererProps } from '../apollo/
 import StraightAnglePieChartQueryRenderer, { IStraightAnglePieChartQueryRendererProps } from
   '../apollo/components/StraightAnglePieChartQueryRenderer';
 import DropDownQueryRenderer, { IDropDownQueryRendererProps } from '../apollo/components/DropDownQueryRenderer';
-import SimpleBarChartQueryRenderer, { ISimpleBarChartQueryRendererProps } from 
+import SimpleBarChartQueryRenderer, { ISimpleBarChartQueryRendererProps } from
   '../apollo/components/SimpleBarChartQueryRenderer';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 import graphqlResultsTransformUtils from '../utils/graphqlResultsUtils';
 
-var channel =[];
-
+var channel = [];
 
 const queryLineCharts = gql`
 query ($query:String!, $appId:String!, $apiKey:String!, $filterKey:String, $filterValues:[String]) {
@@ -102,7 +101,13 @@ interface IQueryRendererWithDataProps {
 
 const LineChartRendererGQL =
   graphql<ILineChartQueryResults, IQueryRendererWithDataProps, ILineChartQueryRendererProps>(queryLineCharts, {
-    options: (ownProps) => { return { variables: { query: ownProps.query, appId, apiKey, filterKey:ownProps.filterKey, filterValues:ownProps.filterValues } }; },
+    options: (ownProps) => {
+      return {
+        variables: {
+          query: ownProps.query, appId, apiKey, filterKey: ownProps.filterKey, filterValues: ownProps.filterValues
+        }
+      };
+    },
     props: ({ ownProps, data }) => {
       return {
         loading: data.loading,
@@ -137,7 +142,13 @@ const StraightAnglePieChartRendererGQL =
 
 const SimpleBarChartQueryRendererGQL =
   graphql<IBarChartQueryResults, IQueryRendererWithDataProps, ISimpleBarChartQueryRendererProps>(queryBarCharts, {
-    options: (ownProps) => { return { variables: { query: ownProps.query, appId, apiKey, filterKey:ownProps.filterKey, filterValues:ownProps.filterValues } }; },
+    options: (ownProps) => {
+      return {
+        variables: {
+          query: ownProps.query, appId, apiKey, filterKey: ownProps.filterKey, filterValues: ownProps.filterValues
+        }
+      };
+    },
     props: ({ ownProps, data }) => {
       return {
         loading: data.loading,
@@ -173,17 +184,11 @@ var filtersData = {};
 
 export default class ElementConnectorForGQL {
 
-  constructor() {
-
-    filterStore.listen((state) => {
-      for (let i = 0; i < state.filterState.length; i++) {
-        var filterValuesArray = state.filterState[i].values;
-        filtersData[state.filterState[i].filterId] = filterValuesArray;
-      }
-    });
-  }
-
-  static loadGraphqlElementsFromDashboard(visual: IVisualElement[], layout: ILayout[]): React.Component<any, any>[] {
+  static loadGraphqlElementsFromDashboardInternal(
+    visual: IVisualElement[],
+    layout: ILayout[],
+    dialogFilterKey: string,
+    dialogFilterValue: string): React.Component<any, any>[] {
     var types = {
       'LineChart': LineChartRendererGQL,
       'PieData': StraightAnglePieChartRendererGQL,
@@ -207,12 +212,36 @@ export default class ElementConnectorForGQL {
             title={visual[i].title}
             subtitle={visual[i].subtitle}
             dialog={visual[i].dialog}
-            filterValues={filtersData[visual[i].filterId]}
-            filterKey={visual[i].filterKey} />
+            filterValues={dialogFilterValue || filtersData[visual[i].filterId]}
+            filterKey={dialogFilterKey || visual[i].filterKey} />
         </div>
       );
     }
 
     return elementsgql;
+  }
+
+  static loadGraphqlElementsFromDashboardDialogs(
+    visual: IVisualElement[],
+    layout: ILayout[],
+    dialogFilterKey: string,
+    dialogFilterValue: string): React.Component<any, any>[] {
+    return this.loadGraphqlElementsFromDashboardInternal(visual, layout, dialogFilterKey, dialogFilterValue);
+  }
+
+  static loadGraphqlElementsFromDashboard(
+    visual: IVisualElement[],
+    layout: ILayout[]): React.Component<any, any>[] {
+    return this.loadGraphqlElementsFromDashboardInternal(visual, layout, null, null);
+  }
+
+  constructor() {
+
+    filterStore.listen((state) => {
+      for (let i = 0; i < state.filterState.length; i++) {
+        var filterValuesArray = state.filterState[i].values;
+        filtersData[state.filterState[i].filterId] = filterValuesArray;
+      }
+    });
   }
 }

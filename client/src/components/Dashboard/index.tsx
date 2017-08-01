@@ -55,7 +55,7 @@ interface IDashboardState {
   visibilityFlags?: IDict<boolean>;
   infoVisible?: boolean;
   infoHtml?: string;
-  filtersTemp?: number;
+  filtersChangeCount?: number;
 }
 
 export default class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
@@ -76,7 +76,7 @@ export default class Dashboard extends React.Component<IDashboardProps, IDashboa
     visibilityFlags: {},
     infoVisible: false,
     infoHtml: '',
-    filtersTemp: 0
+    filtersChangeCount: 0
   };
 
   constructor(props: IDashboardProps) {
@@ -97,20 +97,20 @@ export default class Dashboard extends React.Component<IDashboardProps, IDashboa
     this.onClickDownloadFile = this.onClickDownloadFile.bind(this);
     this.onChangeDownloadFormat = this.onChangeDownloadFormat.bind(this);
     this.onDownloadDashboard = this.onDownloadDashboard.bind(this);
-    
-    this.temp = this.temp.bind(this);
+    this.onFiltersChange = this.onFiltersChange.bind(this);
 
     VisibilityStore.listen(state => {
       this.setState({ visibilityFlags: state.flags });
     });
 
     filterStore.listen((state) => {
-     this.temp(state);
+      this.onFiltersChange(state);
     });
   }
 
-  temp(state) {
-      this.setState({filtersTemp: this.state.filtersTemp + 1})
+  onFiltersChange(state: any) {
+    // change state to cause refresh / re-render 
+    this.setState({ filtersChangeCount: this.state.filtersChangeCount + 1 });
   }
 
   componentDidMount() {

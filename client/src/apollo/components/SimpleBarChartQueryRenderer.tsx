@@ -37,6 +37,10 @@ export default class SimpleBarChartQueryRenderer extends
     // this.setState({ dialogId });
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return !nextProps.loading;
+  }
+  
   // This method extracts from the data all the unique series names. not efficient at the moment
   // and should be updated
   naiveGetAllDifferentBars(data: any/*, channels: any[]*/) {

@@ -2,7 +2,6 @@ import * as React from 'react';
 import Card from '../../components/Card';
 import * as moment from 'moment';
 
-//import filterStore from '../../stores/FilterStore';
 import dialogActions from '../../components/generic/Dialogs/DialogsActions';
 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
@@ -45,6 +44,10 @@ export default class LineChartQueryRenderer extends React.PureComponent<ILineCha
     dialogActions.openDialog(dialogId, {});
 
     // this.setState({ dialogId });
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return !nextProps.loading;
   }
 
   // This method extracts from the data all the unique series names. not efficient at the moment

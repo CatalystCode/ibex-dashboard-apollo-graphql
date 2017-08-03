@@ -29,7 +29,6 @@ describe('Dialog', () => {
     let elements = TestUtils.scryRenderedComponentsWithType(dialog, MDDialog);
     expect(elements.length).toBe(0);
   });
-*/
 
   it('Opening a dialog', function () {
     DialogsActions.openDialog(dialogData.id, { title: 'Title', intent: 'Intent', queryspan: '30D' });
@@ -37,6 +36,8 @@ describe('Dialog', () => {
     expect(elements.length).toBe(1);
   });
 
+  */
+  
   it('Closing a dialog', function () {
     DialogsActions.closeDialog();
     let elements = TestUtils.scryRenderedComponentsWithType(dialog, MDDialog);

@@ -17,7 +17,6 @@ import { ApolloClient, ApolloProvider, createNetworkInterface } from 'react-apol
 import { makeExecutableSchema } from 'graphql-tools';
 import { typeDefs } from '../apollo/typeDefs';
 import { gql, graphql } from 'react-apollo';
-import { appId, apiKey } from '../data-sources/plugins/ApplicationInsights/common';
 
 import LineChartQueryRenderer, { ILineChartQueryRendererProps } from '../apollo/components/LineChartQueryRenderer';
 import StraightAnglePieChartQueryRenderer, { IStraightAnglePieChartQueryRendererProps } from
@@ -91,6 +90,8 @@ interface IBarChartQueryResults {
 
 interface IQueryRendererWithDataProps {
   query: string;
+  appInsightsAppId: string;
+  appInsightsApiKey: string;
   id: string;
   title: string;
   subtitle: string;
@@ -104,7 +105,7 @@ const LineChartRendererGQL =
     options: (ownProps) => {
       return {
         variables: {
-          query: ownProps.query, appId, apiKey, filterKey: ownProps.filterKey, filterValues: ownProps.filterValues
+          query: ownProps.query, appId: ownProps.appInsightsAppId, apiKey: ownProps.appInsightsApiKey, filterKey: ownProps.filterKey, filterValues: ownProps.filterValues
         }
       };
     },
@@ -127,7 +128,7 @@ const LineChartRendererGQL =
 const StraightAnglePieChartRendererGQL =
   graphql<IPieChartQueryResults, IQueryRendererWithDataProps, IStraightAnglePieChartQueryRendererProps>(
     queryPieCharts, {
-      options: (ownProps) => { return { variables: { query: ownProps.query, appId, apiKey } }; },
+      options: (ownProps) => { return { variables: { query: ownProps.query, appId: ownProps.appInsightsAppId, apiKey: ownProps.appInsightsApiKey } }; },
       props: ({ ownProps, data }) => {
         return {
           loading: data.loading,
@@ -145,7 +146,7 @@ const SimpleBarChartQueryRendererGQL =
     options: (ownProps) => {
       return {
         variables: {
-          query: ownProps.query, appId, apiKey, filterKey: ownProps.filterKey, filterValues: ownProps.filterValues
+          query: ownProps.query, appId: ownProps.appInsightsAppId, apiKey: ownProps.appInsightsApiKey, filterKey: ownProps.filterKey, filterValues: ownProps.filterValues
         }
       };
     },
@@ -166,7 +167,7 @@ const SimpleBarChartQueryRendererGQL =
 
 const DropDownRendererGQL =
   graphql<IChannelsQueryResults, IQueryRendererWithDataProps, IDropDownQueryRendererProps>(queryChannels, {
-    options: (ownProps) => { return { variables: { query: ownProps.query, appId, apiKey } }; },
+    options: (ownProps) => { return { variables: { query: ownProps.query, appId: ownProps.appInsightsAppId, apiKey: ownProps.appInsightsApiKey } }; },
     props: ({ ownProps, data }) => {
       return {
         loading: data.loading,
@@ -185,6 +186,7 @@ var filtersData = {};
 export default class ElementConnectorForGQL {
 
   static loadGraphqlElementsFromDashboardInternal(
+    connections: IConnections,
     visual: IVisualElement[],
     layout: ILayout[],
     dialogFilterKey: string,
@@ -204,10 +206,20 @@ export default class ElementConnectorForGQL {
     for (var i = 0; i < visual.length; i++) {
       var ReactElement = types[visual[i].Type];
       var key = '' + i + visual[i].Type;
+      
+      let appInsightsApiKey ='';
+      let appInsightsAppId ='';
+      if (visual[i].source == "AI") {
+        appInsightsAppId = connections['application-insights'].appId;
+        appInsightsApiKey = connections['application-insights'].apiKey;
+      }
+
       elementsgql.push(
         <div key={key}>
           <ReactElement
             query={visual[i].query}
+            appInsightsAppId={appInsightsAppId}
+            appInsightsApiKey={appInsightsApiKey}
             id={visual[i].id}
             title={visual[i].title}
             subtitle={visual[i].subtitle}
@@ -222,17 +234,19 @@ export default class ElementConnectorForGQL {
   }
 
   static loadGraphqlElementsFromDashboardDialogs(
+    connections: IConnections,
     visual: IVisualElement[],
     layout: ILayout[],
     dialogFilterKey: string,
     dialogFilterValue: string): React.Component<any, any>[] {
-    return this.loadGraphqlElementsFromDashboardInternal(visual, layout, dialogFilterKey, dialogFilterValue);
+    return this.loadGraphqlElementsFromDashboardInternal(connections, visual, layout, dialogFilterKey, dialogFilterValue);
   }
 
   static loadGraphqlElementsFromDashboard(
+    connections: IConnections,
     visual: IVisualElement[],
     layout: ILayout[]): React.Component<any, any>[] {
-    return this.loadGraphqlElementsFromDashboardInternal(visual, layout, null, null);
+    return this.loadGraphqlElementsFromDashboardInternal(connections, visual, layout, null, null);
   }
 
   constructor() {

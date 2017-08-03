@@ -126,6 +126,7 @@ export default class Dialog extends React.PureComponent<IDialogProps, IDialogSta
     // var elements = ElementConnector.loadElementsFromDashboard(dialogData, layout);
     var elements =
       ElementConnectorGQL.loadGraphqlElementsFromDashboardDialogs(
+        dashboard.config.connections,
         dialogData.visual,
         layout,
         keyToFilterOn,

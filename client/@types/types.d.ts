@@ -102,6 +102,7 @@ interface IVisualDialog {
 
 interface IVisualElement {
   Type: string,
+  source: string;
   query:string,
   title: string,
   subtitle: string,

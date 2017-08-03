@@ -14,7 +14,6 @@ export const config: IDashboardConfig = /*return*/ {
          </div>`,
 	config: {
 		connections: {
-			"application-insights": { appId: "4d567b3c-e52c-4139-8e56-8e573e55a06c",apiKey: "o27hgbeqnkodr7ttcqs061z4bfxuyak4t0mvp8h1" }
 		},
 		layout: {
 			isDraggable: true,

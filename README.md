@@ -42,34 +42,9 @@ yarn start:dev
 
 ## Deploy To Azure
 
-There are 3 ways to deploy to Azure:
-
-**1. Web App - Automated**
-
-1. Fork this repo (to be able to automatically create github deployment key)
-2. Copy the fork url and use it with the following deployment button:
-
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Ftorosent%2Fibex-dashboard%2Fmaster%2Fscripts%2Fdeployment%2Fwebapp%2Fazuredeploy.json" target="_blank">
-    <img src="http://azuredeploy.net/deploybutton.png"/>
-</a>
-
-**2. Web App On Linux - Automated with Docker Hub**
-
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FCatalystCode%2Fibex-dashboard%2Fmaster%2Fscripts%2Fdeployment%2Fwebapponlinux%2Fazuredeploy.json" target="_blank">
-    <img src="http://azuredeploy.net/deploybutton.png"/>
-</a>
-
-**3. Manual**
-
 1. Fork this repo (to be able to automatically create github deployment key)
 2. Clone & Deploy:
 3. [Create a new Web App in Azure](https://docs.microsoft.com/en-us/azure/app-service-web/app-service-continuous-deployment)
-
-## Deploy With Docker
-
-1. `docker build -t **image name** .`
-2. `docker run -d -e PORT=80 **image name** `
-3. Docker image is also available at Docker Hub - `docker pull ***REMOVED***/ibex-dashboard-graphql`
 
 ## Application Insights Integration
 

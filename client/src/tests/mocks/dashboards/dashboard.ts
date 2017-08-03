@@ -13,5 +13,6 @@ export default <IDashboardConfig>{
   dataSources: [],
   filters: [],
   elements: [],
-  dialogs: []
+  dialogs: [],
+  visualDialog: [],
 };

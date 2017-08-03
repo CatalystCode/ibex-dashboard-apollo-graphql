@@ -1,6 +1,12 @@
 import { createDashboard } from './utils';
 
 let dashboard = createDashboard();
+dashboard.visualDialog.push({
+      id: "dialog2",
+      size:{w:2, h:2},
+      visual: [],
+});
+
 dashboard.dialogs.push({
   id: "conversations",
   width: '60%',

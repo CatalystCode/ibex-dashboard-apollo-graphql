@@ -11,7 +11,7 @@ This version is a fork from the original Ibex dashboard project [Source Code](ht
 
 # Preview
 
-[![Preview](/docs/images/bot-framework-apollo-gql-preview.png)](/docs/images/bot-framework-apollo-gql-preview.png)
+[![Preview](/docs/bot-framework-apollo-gql-preview.png)](/docs/bot-framework-apollo-gql-preview.png)
 
 ## Display your Bot Analytics Dashboard
 

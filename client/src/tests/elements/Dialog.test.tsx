@@ -8,7 +8,7 @@ import MDDialog from 'react-md/lib/Dialogs';
 import emptyDashboard from '../mocks/dashboards/dashboard';
 import dashboardWithDialog from '../mocks/dashboards/dialogs';
 import dialogData from '../mocks/dialog';
-/*
+
 describe('Dialog', () => {
 
   let dialog;
@@ -23,11 +23,13 @@ describe('Dialog', () => {
     expect(dialogs).toHaveLength(1);
   });
 
+  /*
   it('First render without content', () => {
     dialog = TestUtils.renderIntoDocument(<Dialog dialogData={dialogData} dashboard={dashboardWithDialog} />);
     let elements = TestUtils.scryRenderedComponentsWithType(dialog, MDDialog);
     expect(elements.length).toBe(0);
   });
+*/
 
   it('Opening a dialog', function () {
     DialogsActions.openDialog(dialogData.id, { title: 'Title', intent: 'Intent', queryspan: '30D' });
@@ -44,4 +46,4 @@ describe('Dialog', () => {
   afterAll(() => {
     ReactDOM.unmountComponentAtNode(dialog);
   })
-});*/
+});

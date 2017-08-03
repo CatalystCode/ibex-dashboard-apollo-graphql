@@ -105,7 +105,11 @@ const LineChartRendererGQL =
     options: (ownProps) => {
       return {
         variables: {
-          query: ownProps.query, appId: ownProps.appInsightsAppId, apiKey: ownProps.appInsightsApiKey, filterKey: ownProps.filterKey, filterValues: ownProps.filterValues
+          query: ownProps.query,
+          appId: ownProps.appInsightsAppId,
+          apiKey: ownProps.appInsightsApiKey,
+          filterKey: ownProps.filterKey,
+          filterValues: ownProps.filterValues
         }
       };
     },
@@ -128,7 +132,15 @@ const LineChartRendererGQL =
 const StraightAnglePieChartRendererGQL =
   graphql<IPieChartQueryResults, IQueryRendererWithDataProps, IStraightAnglePieChartQueryRendererProps>(
     queryPieCharts, {
-      options: (ownProps) => { return { variables: { query: ownProps.query, appId: ownProps.appInsightsAppId, apiKey: ownProps.appInsightsApiKey } }; },
+      options: (ownProps) => {
+        return {
+          variables: {
+            query: ownProps.query,
+            appId: ownProps.appInsightsAppId,
+            apiKey: ownProps.appInsightsApiKey
+          }
+        };
+      },
       props: ({ ownProps, data }) => {
         return {
           loading: data.loading,
@@ -146,7 +158,11 @@ const SimpleBarChartQueryRendererGQL =
     options: (ownProps) => {
       return {
         variables: {
-          query: ownProps.query, appId: ownProps.appInsightsAppId, apiKey: ownProps.appInsightsApiKey, filterKey: ownProps.filterKey, filterValues: ownProps.filterValues
+          query: ownProps.query,
+          appId: ownProps.appInsightsAppId,
+          apiKey: ownProps.appInsightsApiKey,
+          filterKey: ownProps.filterKey,
+          filterValues: ownProps.filterValues
         }
       };
     },
@@ -167,7 +183,15 @@ const SimpleBarChartQueryRendererGQL =
 
 const DropDownRendererGQL =
   graphql<IChannelsQueryResults, IQueryRendererWithDataProps, IDropDownQueryRendererProps>(queryChannels, {
-    options: (ownProps) => { return { variables: { query: ownProps.query, appId: ownProps.appInsightsAppId, apiKey: ownProps.appInsightsApiKey } }; },
+    options: (ownProps) => {
+      return {
+        variables: {
+          query: ownProps.query,
+          appId: ownProps.appInsightsAppId,
+          apiKey: ownProps.appInsightsApiKey
+        }
+      };
+    },
     props: ({ ownProps, data }) => {
       return {
         loading: data.loading,
@@ -206,10 +230,10 @@ export default class ElementConnectorForGQL {
     for (var i = 0; i < visual.length; i++) {
       var ReactElement = types[visual[i].Type];
       var key = '' + i + visual[i].Type;
-      
-      let appInsightsApiKey ='';
-      let appInsightsAppId ='';
-      if (visual[i].source == "AI") {
+
+      let appInsightsApiKey = '';
+      let appInsightsAppId = '';
+      if (visual[i].source === 'AI') {
         appInsightsAppId = connections['application-insights'].appId;
         appInsightsApiKey = connections['application-insights'].apiKey;
       }
@@ -239,7 +263,12 @@ export default class ElementConnectorForGQL {
     layout: ILayout[],
     dialogFilterKey: string,
     dialogFilterValue: string): React.Component<any, any>[] {
-    return this.loadGraphqlElementsFromDashboardInternal(connections, visual, layout, dialogFilterKey, dialogFilterValue);
+    return this.loadGraphqlElementsFromDashboardInternal(
+      connections,
+      visual, 
+      layout, 
+      dialogFilterKey, 
+      dialogFilterValue);
   }
 
   static loadGraphqlElementsFromDashboard(

@@ -281,8 +281,13 @@ export default class Dashboard extends React.Component<IDashboardProps, IDashboa
     var elements = ElementConnector.loadElementsFromDashboard(dashboard, layout);
 
     // Creating filter elements
-    var filters = ElementConnectorGQL.loadGraphqlElementsFromDashboard(dashboard.config.connections, dashboard.visualFilters, layout);
-    var elementsgql = ElementConnectorGQL.loadGraphqlElementsFromDashboard(dashboard.config.connections, dashboard.visual, layout);
+    var filters = 
+      ElementConnectorGQL.loadGraphqlElementsFromDashboard(
+        dashboard.config.connections, 
+        dashboard.visualFilters, 
+        layout);
+    var elementsgql = 
+      ElementConnectorGQL.loadGraphqlElementsFromDashboard(dashboard.config.connections, dashboard.visual, layout);
 
     // Loading dialogs
     var dialogs = loadDialogsFromDashboard(dashboard);

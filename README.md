@@ -1,4 +1,4 @@
-# Ibex Dashboard - GraphQL + Apollo version
+# Ibex Dashboard - GraphQL + Apollo version [![Build Status](https://travis-ci.org/***REMOVED***/ibex-dashboard-graphql.svg?branch=agql-server-endpoint)](https://travis-ci.org/***REMOVED***/ibex-dashboard-graphql)
 
 Ibex is a dashboarding application that enables building dashboard and templates.
 It mainly supports **Application Insights** but data sources and visual components are easily extendable.
@@ -20,7 +20,7 @@ This version is a fork from the original Ibex dashboard project [Source Code](ht
 ```bash
 npm install yarn -g
 
-git clone https://github.com/CatalystCode/ibex-dashboard
+git clone https://github.com/***REMOVED***/ibex-dashboard-graphql
 cd ibex-dashboard
 yarn
 yarn start
@@ -69,7 +69,7 @@ There are 3 ways to deploy to Azure:
 
 1. `docker build -t **image name** .`
 2. `docker run -d -e PORT=80 **image name** `
-3. Docker image is also available at Docker Hub - `docker pull catalystcode/ibex-dashboard`
+3. Docker image is also available at Docker Hub - `docker pull ***REMOVED***/ibex-dashboard-graphql`
 
 ## Application Insights Integration
 

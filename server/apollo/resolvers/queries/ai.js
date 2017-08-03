@@ -39,7 +39,7 @@ const executeAiQuery = (query, appId, apiKey) => {
   });
 }
 
-const channelsQuery = (root, { query, appId, apiKey }) => {
+const channelsQuery = (query, appId, apiKey) => {
   return new Promise((resolve, reject) => {
     var q = getPredefinedQuery(query);
     var queryToExecute = q ? q : query;
@@ -52,7 +52,7 @@ const channelsQuery = (root, { query, appId, apiKey }) => {
   });
 };
 
-const lineChartQuery = (root, { query, appId, apiKey, filterKey, filterValues }) => {
+const lineChartQuery = (query, appId, apiKey, filterKey, filterValues) => {
   return new Promise((resolve, reject) => {
     var q = getPredefinedQuery(query);
     var queryToExecute = q ? q : query;
@@ -69,11 +69,10 @@ const lineChartQuery = (root, { query, appId, apiKey, filterKey, filterValues })
         var res = aiConvertors.toLineChart(data.body);
         resolve([res]);
       });
-
   });
 };
 
-const pieChartQuery = (root, { query, appId, apiKey }) => {
+const pieChartQuery = (query, appId, apiKey) => {
   return new Promise((resolve, reject) => {
     var q = getPredefinedQuery(query);
     var queryToExecute = q ? q : query;
@@ -86,7 +85,7 @@ const pieChartQuery = (root, { query, appId, apiKey }) => {
   });
 };
 
-const barChartQuery = (root, { query, appId, apiKey, filterKey, filterValues }) => {
+const barChartQuery = (query, appId, apiKey, filterKey, filterValues) => {
   return new Promise((resolve, reject) => {
     var q = getPredefinedQuery(query);
     var queryToExecute = q ? q : query;

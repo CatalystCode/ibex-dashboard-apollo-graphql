@@ -1,4 +1,4 @@
-const { channelsQuery, pieChartQuery, lineChartQuery, barChartQuery } = require('./queries/ai');
+const { channelsQuery, pieChartQuery, lineChartQuery, barChartQuery } = require('./queries/resolversRedirect');
 
 const resolvers = {
   Query: {

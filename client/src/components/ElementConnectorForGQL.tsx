@@ -31,20 +31,21 @@ import graphqlResultsTransformUtils from '../utils/graphqlResultsUtils';
 var channel = [];
 
 const queryLineCharts = gql`
-query ($query:String!, $appId:String!, $apiKey:String!, $filterKey:String, $filterValues:[String]) {
-  lineCharts(query:$query, appId:$appId, apiKey:$apiKey, filterKey:$filterKey, filterValues:$filterValues) {
-    seriesData {
-      label
-      x_values
-      y_values
-    }
+query ($source: String!, $query:String!, $appId:String!, $apiKey:String!, $filterKey:String, $filterValues:[String]) {
+  lineCharts(source:$source, query:$query, appId:$appId, apiKey:$apiKey, filterKey:$filterKey, 
+    filterValues:$filterValues) {
+      seriesData {
+        label
+        x_values
+        y_values
+      }
   }
 }
 `;
 
 const queryChannels = gql`
-query ($query:String!, $appId:String!, $apiKey:String!) {
-  channels(query:$query, appId:$appId, apiKey:$apiKey) {
+query ($source: String!, $query:String!, $appId:String!, $apiKey:String!) {
+  channels(source:$source, query:$query, appId:$appId, apiKey:$apiKey) {
     id
     name
   }
@@ -52,8 +53,8 @@ query ($query:String!, $appId:String!, $apiKey:String!) {
 `;
 
 const queryPieCharts = gql`
-query ($query:String!, $appId:String!, $apiKey:String!) {
-  pieCharts(query:$query, appId:$appId, apiKey:$apiKey, source:"" ) {
+query ($source: String!, $query:String!, $appId:String!, $apiKey:String!) {
+  pieCharts(source:$source, query:$query, appId:$appId, apiKey:$apiKey ) {
     labels
     values
   }
@@ -61,13 +62,14 @@ query ($query:String!, $appId:String!, $apiKey:String!) {
 `;
 
 const queryBarCharts = gql`
-query ($query:String!, $appId:String!, $apiKey:String!, $filterKey:String, $filterValues:[String]) {
-  barCharts(query:$query, appId:$appId, apiKey:$apiKey, source:"", filterKey:$filterKey, filterValues:$filterValues) {
-    seriesData {
-      label
-      x_values
-      y_values
-    }
+query ($source: String!, $query:String!, $appId:String!, $apiKey:String!, $filterKey:String, $filterValues:[String]) {
+  barCharts(source:$source, query:$query, appId:$appId, apiKey:$apiKey, filterKey:$filterKey, 
+    filterValues:$filterValues) {
+      seriesData {
+        label
+        x_values
+        y_values
+      }
   }
 }
 `;
@@ -90,6 +92,7 @@ interface IBarChartQueryResults {
 
 interface IQueryRendererWithDataProps {
   query: string;
+  source: string;
   appInsightsAppId: string;
   appInsightsApiKey: string;
   id: string;
@@ -106,6 +109,7 @@ const LineChartRendererGQL =
       return {
         variables: {
           query: ownProps.query,
+          source: ownProps.source,
           appId: ownProps.appInsightsAppId,
           apiKey: ownProps.appInsightsApiKey,
           filterKey: ownProps.filterKey,
@@ -135,6 +139,7 @@ const StraightAnglePieChartRendererGQL =
       options: (ownProps) => {
         return {
           variables: {
+            source: ownProps.source,
             query: ownProps.query,
             appId: ownProps.appInsightsAppId,
             apiKey: ownProps.appInsightsApiKey
@@ -158,6 +163,7 @@ const SimpleBarChartQueryRendererGQL =
     options: (ownProps) => {
       return {
         variables: {
+          source: ownProps.source,
           query: ownProps.query,
           appId: ownProps.appInsightsAppId,
           apiKey: ownProps.appInsightsApiKey,
@@ -186,9 +192,10 @@ const DropDownRendererGQL =
     options: (ownProps) => {
       return {
         variables: {
+          source: ownProps.source,
           query: ownProps.query,
           appId: ownProps.appInsightsAppId,
-          apiKey: ownProps.appInsightsApiKey
+          apiKey: ownProps.appInsightsApiKey,
         }
       };
     },
@@ -242,6 +249,7 @@ export default class ElementConnectorForGQL {
         <div key={key}>
           <ReactElement
             query={visual[i].query}
+            source={visual[i].source}
             appInsightsAppId={appInsightsAppId}
             appInsightsApiKey={appInsightsApiKey}
             id={visual[i].id}

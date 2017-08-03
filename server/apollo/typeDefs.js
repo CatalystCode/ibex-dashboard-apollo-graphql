@@ -3,10 +3,10 @@
 const typeDefs = `
 
 type Query {
-  channels(query:String!, appId:String!, apiKey:String!): [Channel]
-  lineCharts(query:String!,  appId:String!, apiKey:String!, filterKey:String, filterValues:[String]): [LineChart]
-  pieCharts(query:String!, source:String!, appId:String!, apiKey:String!): [PieChart]
-  barCharts(query:String!, source:String!, appId:String!, apiKey:String!, filterKey:String, filterValues:[String]): [BarChart]
+  channels(source: String!, query:String!, appId:String!, apiKey:String!): [Channel]
+  lineCharts(source: String!, query:String!, appId:String!, apiKey:String!, filterKey:String, filterValues:[String]): [LineChart]
+  pieCharts(source: String!, query:String!, appId:String!, apiKey:String!): [PieChart]
+  barCharts(source: String!, query:String!, appId:String!, apiKey:String!, filterKey:String, filterValues:[String]): [BarChart]
 }
 
 type Channel {

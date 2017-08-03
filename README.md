@@ -28,6 +28,14 @@ yarn start
 2. Create a new template from **Bot Analytics Basic Dashboard**
 3. Run through the **Application Insights** setup and fill in **API Key** and **Application ID** according to the application insights account associated with your registered bot.
 
+## Running a sample dashboard
+It is possible to create a sample dashboard with stub data.
+Start the client and the server
+Create a new dashboard using the 'Apollo + GraphQL based dashboard (with stub data)' template
+[![StubTemplate](/docs/template-for-sample.png)](/docs/template-for-sample.png).
+
+Choose the newly create dashboard on the list on the left.
+
 ### Development
 
 ```bash

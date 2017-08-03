@@ -32,7 +32,7 @@ yarn start
 It is possible to create a sample dashboard with stub data.
 Start the client and the server
 Create a new dashboard using the 'Apollo + GraphQL based dashboard (with stub data)' template
-[![StubTemplate](/docs/template-for-sample.png)](/docs/template-for-sample.png).
+[![StubTemplate](/docs/template-for-sample.PNG)](/docs/template-for-sample.PNG).
 
 Choose the newly create dashboard on the list on the left.
 

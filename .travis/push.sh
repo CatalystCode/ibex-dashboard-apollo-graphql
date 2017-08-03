@@ -3,7 +3,7 @@
 set -euo pipefail
 
 readonly GITHUB_ORG="${GITHUB_ORG:-***REMOVED***}"
-readonly GITHUB_REPO="${GITHUB_REPO:-ibex-dashboard}"
+readonly GITHUB_REPO="${GITHUB_REPO:-ibex-dashboard-graphql}"
 readonly TARGET_BRANCH="${TARGET_BRANCH:-master}"
 readonly SOURCE_BRANCH="${SOURCE_BRANCH:-agql-server-endpoint}"
 

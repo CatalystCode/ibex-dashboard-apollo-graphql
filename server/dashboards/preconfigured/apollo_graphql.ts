@@ -152,7 +152,39 @@ export const config: IDashboardConfig = /*return*/ {
       }
     }
   },
-  dataSources: [],
+  dataSources: [{
+      // this data source is here as a HACK to make sure datasources are populated and you are required to enter
+      // AppInsights appId and ApiKey if missing
+			id: "ai",
+			type: "ApplicationInsights/Query",
+			dependencies: {
+				timespan: "timespan",
+				queryTimespan: "timespan:queryTimespan",
+				granularity: "timespan:granularity",
+				selectedChannels: "filters:channels-selected",
+				selectedIntents: "filters:intents-selected"
+			},
+			params: {
+				table: "customEvents",
+				queries: {
+					timeline: {
+						query: (dependencies) => {
+							var { granularity } = dependencies;
+							return ``
+						},
+						mappings: { channel: (val) => val || "unknown",count: (val) => val || 0 },
+						filters: [{ dependency: "selectedChannels",queryProperty: "customDimensions.channel" }],
+						calculated: (timeline, dependencies) => {
+
+							return {
+								"timeline-graphData": 11,
+							
+							};
+						}
+					},
+				}
+			}
+		}],
   elements: [],
   filters: [],
   visual: [

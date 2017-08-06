@@ -1,8 +1,9 @@
 const fs = require('fs');
+const path = require('path');
 
 const getDataFromFile = (fileName, query, filterKey, filterValues) => {
   return new Promise((resolve, reject) => {
-    var fileContent = JSON.parse(fs.readFileSync('./sampleData/' + fileName, 'utf8'));
+    var fileContent = JSON.parse(fs.readFileSync(path.join(__dirname, '../../../', 'sampleData', fileName), 'utf8'));
     
     // if filters required, lets filter by the channels. this is a hack just for the purpose of the sample data
     // and it looks for the label in seriesData, so other datasources will not be filtered..

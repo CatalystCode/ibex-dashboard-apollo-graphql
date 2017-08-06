@@ -15,7 +15,6 @@ import Button from 'react-md/lib/Buttons/Button';
 
 import { ApolloClient, ApolloProvider, createNetworkInterface } from 'react-apollo';
 import { makeExecutableSchema } from 'graphql-tools';
-import { typeDefs } from '../apollo/typeDefs';
 import { gql, graphql } from 'react-apollo';
 
 import LineChartQueryRenderer, { ILineChartQueryRendererProps } from '../apollo/components/LineChartQueryRenderer';

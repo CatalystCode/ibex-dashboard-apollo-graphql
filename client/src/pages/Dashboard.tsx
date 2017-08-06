@@ -8,7 +8,6 @@ import ConfigurationsStore from '../stores/ConfigurationsStore';
 
 import { ApolloClient, ApolloProvider, createNetworkInterface, createBatchingNetworkInterface} from 'react-apollo';
 import { makeExecutableSchema } from 'graphql-tools';
-import { typeDefs } from '../apollo/typeDefs';
 
 interface IDashboardState {
   dashboard?: IDashboardConfig;
@@ -16,8 +15,6 @@ interface IDashboardState {
   connectionsMissing?: boolean;
 }
 
-makeExecutableSchema({ typeDefs });
- 
  const batchingNetworkInterface = createBatchingNetworkInterface({
   uri: 'http://localhost:4000/apollo',
   batchInterval: 10,
@@ -74,7 +71,7 @@ export default class Dashboard extends React.Component<any, IDashboardState> {
 
     return (
       <ApolloProvider client={client}>
-      <DashboardComponent dashboard={dashboard} />
+        <DashboardComponent dashboard={dashboard} />
       </ApolloProvider>
     );
   }

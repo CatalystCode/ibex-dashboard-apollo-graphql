@@ -1,4 +1,4 @@
-# Ibex Dashboard - GraphQL + Apollo version [![Build Status](https://travis-ci.org/***REMOVED***/ibex-dashboard-graphql.svg?branch=agql-server-endpoint)](https://travis-ci.org/***REMOVED***/ibex-dashboard-graphql)
+# Ibex Dashboard - GraphQL + Apollo version [![Build Status](https://travis-ci.org/CatalystCode/ibex-dashboard-apollo-graphql.svg?branch=agql-server-endpoint)](https://travis-ci.org/CatalystCode/ibex-dashboard-apollo-graphql)
 
 Ibex is a dashboarding application that enables building dashboard and templates.
 It mainly supports **Application Insights** but data sources and visual components are easily extendable.
@@ -18,7 +18,7 @@ This version is a fork from the original Ibex dashboard project [Source Code](ht
 ```bash
 npm install yarn -g
 
-git clone https://github.com/***REMOVED***/ibex-dashboard-graphql
+git clone https://github.com/CatalystCode/ibex-dashboard-apollo-graphql
 cd ibex-dashboard-graphql
 yarn
 yarn start

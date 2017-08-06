@@ -32,6 +32,7 @@ yarn start
 
 ## Running a sample dashboard
 It is possible to create a sample dashboard with stub data:
+
 0. Follow the installation instructions above
 1. Open **http://localhost:4000**
 2. Create a new template from **Apollo + GraphQL based dashboard (with stub data)**
@@ -82,6 +83,8 @@ The following steps explain how to connect **Application Insights** bot with you
 * https://github.com/facebookincubator/create-react-app
 * http://recharts.org/
 * https://react-md.mlaursen.com/
+* http://graphql.org/
+* https://www.apollodata.com/
 
 ### Design and Patterns
 This project is built using:
@@ -92,6 +95,7 @@ The server approach was added using:
 
 * https://www.fullstackreact.com/articles/using-create-react-app-with-a-server/
 * https://medium.com/@patriciolpezjuri/using-create-react-app-with-react-router-express-js-8fa658bf892d#.14dex6478
+* http://graphql.org/
 
 Thinking about integrating with:
 

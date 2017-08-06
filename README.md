@@ -19,13 +19,13 @@ This version is a fork from the original Ibex dashboard project [Source Code](ht
 npm install yarn -g
 
 git clone https://github.com/***REMOVED***/ibex-dashboard-graphql
-cd ibex-dashboard
+cd ibex-dashboard-graphql
 yarn
 yarn start
 ```
 
 1. Open **http://localhost:4000**
-2. Create a new template from **Bot Analytics Basic Dashboard**
+2. Create a new template from **Apollo + GraphQL based dashboard**
 3. Run through the **Application Insights** setup and fill in **API Key** and **Application ID** according to the application insights account associated with your registered bot.
 
 ## Running a sample dashboard

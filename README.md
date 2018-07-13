@@ -138,5 +138,5 @@ Or
 .travis/build.sh
 ```
 
-# Lisence
+# Licence
 MIT
